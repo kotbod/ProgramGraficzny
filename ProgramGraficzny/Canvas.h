@@ -12,5 +12,7 @@ public:
 public:
 	Canvas(int width_of_canvas, int height_of_canvas) ;
 	~Canvas();
-	
+	void set_pixel( int x, int y, int pixel);
 };
+
+
