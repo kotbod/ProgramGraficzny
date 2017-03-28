@@ -8,8 +8,7 @@ class Pencil : public Tool {
 private:
 	Canvas* canvas;
 	bool left_click;
-	int x;
-	int y;
+	Pixel previous_pos;
 public:
 	Pencil(Canvas* canvas);
 
