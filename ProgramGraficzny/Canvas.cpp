@@ -19,9 +19,8 @@ void Canvas::set_pixel(Pixel pos, int color)
 	*(int *)target_pixel = color;
 }
 void Canvas::draw_line(Pixel P1, Pixel P2, int color) {
-
-	double x = P1.x - P2.x;
-	double y = P1.y - P2.y;
+	double x = P2.x - P1.x;
+	double y = P2.y - P1.y;
 	double length = sqrt(x*x + y*y);
 
 	if (length < 1)
