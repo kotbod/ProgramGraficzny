@@ -6,6 +6,7 @@
 
 class Application {
 private:
+	static Pixel mouse_position;
 	Canvas *main_canvas;
 	Display display;
 	Tool *active_tool;
@@ -19,5 +20,7 @@ public:
 	void set_up_events();
 	void handle_events();
 	void loop();
+	static Pixel get_mouse_position();
+	static Pixel get_canvas_position();
 	void draw_everything();
 };

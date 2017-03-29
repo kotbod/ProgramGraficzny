@@ -5,11 +5,12 @@
 #include "display.h"
 
 Display::Display(int width, int height) {
-	window = SDL_CreateWindow("Program graficzny", 200, 200, width, height, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("Program graficzny", 200, 200, width, height, SDL_WINDOW_MAXIMIZED);
 	window_surface = SDL_GetWindowSurface(window);
-	//window_surface = SDL_CreateRGBSurface(0, width, height, 24, 0, 0, 0, 0);
+	
 	renderer = SDL_CreateSoftwareRenderer(window_surface);
-	//SDL_CreateWindowAndRenderer(width, height, SDL_WINDOW_RESIZABLE, &window, &renderer);
+	SDL_SetRenderDrawColor(renderer, 128,128,128, 255);
+	
 }
 
 Display::~Display() {
@@ -44,6 +45,9 @@ SDL_Texture* Display::load_texture(std::string path) {
 
 void Display::update() {
 	SDL_UpdateWindowSurface(window);
+	SDL_RenderClear(renderer);
+
 	SDL_RenderPresent(renderer);
+
 }
 

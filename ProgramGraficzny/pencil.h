@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "tool.h"
 #include "Canvas.h"
+#include "application.h"
 
 class Pencil : public Tool {
 private:
