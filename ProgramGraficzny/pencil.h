@@ -4,9 +4,11 @@
 #include "tool.h"
 #include "Canvas.h"
 #include "application.h"
+#include"Button.h"
 
 class Pencil : public Tool {
 private:
+	int colour=0;
 	Canvas* canvas;
 	bool left_click;
 	Pixel previous_pos;

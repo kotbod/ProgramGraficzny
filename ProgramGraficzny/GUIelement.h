@@ -1,9 +1,10 @@
 #pragma once
+#include"display.h"
 
 
 class GUIelement {
-	void update();
-	void handle_events();
-	void draw();
+	virtual void update()=0;
+	virtual void handle_event(SDL_Event &e)=0;
+	virtual void draw(Display* display)=0;
 
 };

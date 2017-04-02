@@ -1,8 +1,13 @@
 #pragma once
+#include <vector>
+
 #include "Canvas.h"
 #include "display.h"
 #include "tool.h"
 #include "pencil.h"
+#include"Button.h"
+
+using namespace std;
 
 class Application {
 private:
@@ -10,11 +15,14 @@ private:
 	Canvas *main_canvas;
 	Display display;
 	Tool *active_tool;
+	vector<Button*> *palette;
 	SDL_Event* mainEvent = new SDL_Event();
 	bool quit;
 public:
 	Application(void);
 	~Application();
+
+	static int CHANGE_COLOUR;
 
 	void start();
 	void set_up_events();

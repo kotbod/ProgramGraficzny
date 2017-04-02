@@ -10,6 +10,7 @@ public:
 	Pixel(Pixel&& p);
 	Pixel operator=(Pixel & p);
 	Pixel operator-(Pixel & p);
+	Pixel operator+(Pixel & p);
 	Pixel(int x, int y);
 
 };

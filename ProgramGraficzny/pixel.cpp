@@ -20,3 +20,8 @@ Pixel Pixel::operator=(Pixel& p) {
 Pixel Pixel::operator-(Pixel& p) {
 	return Pixel(x - p.x, y - p.y);
 }
+
+Pixel Pixel::operator+(Pixel& p) {
+	return Pixel(x + p.x, y + p.y);
+}
+
