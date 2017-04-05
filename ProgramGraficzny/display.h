@@ -12,7 +12,7 @@ public:
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	std::vector<SDL_Texture*> texture_pool;
+	std::vector<SDL_Surface*> texture_pool;
 public:
 	Display(int width, int height);
 	~Display();
@@ -20,6 +20,6 @@ public:
 	SDL_Renderer* get_renderer();
 	SDL_Window* get_window();
 
-	SDL_Texture* load_texture(std::string path);
+	SDL_Surface* load_texture(std::string path);
 	void update();
 };

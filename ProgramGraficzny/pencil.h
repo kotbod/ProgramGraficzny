@@ -7,7 +7,7 @@
 #include"Button.h"
 
 class Pencil : public Tool {
-private:
+protected:
 	int colour=0;
 	Canvas* canvas;
 	bool left_click;

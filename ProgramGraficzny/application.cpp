@@ -7,6 +7,8 @@
 #include "Canvas.h"
 #include"pixel.h"
 #include"Button.h"
+#include "Button_tool.h"
+#include"Marker.h"
 
 #define MENU_HEIGHT 70
 
@@ -18,14 +20,18 @@ const int SCREEN_HEIGHT = 400;
 Pixel Application::mouse_position;
 
 int Application::CHANGE_COLOUR;
+int Application::CHANGE_TO_PENCIL;
+int Application::CHANGE_TO_MARKER;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
+	CHANGE_TO_PENCIL = SDL_RegisterEvents(1);
+	CHANGE_TO_MARKER = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
 	set_up_events();
-	palette = new vector<Button*>();
+	palette = new vector<GUIelement*>();
 }
 Application::~Application() {
 	delete main_canvas;
@@ -34,7 +40,7 @@ Application::~Application() {
 
 void Application::start() {
 	main_canvas = new Canvas(400, 400);
-	active_tool = new Pencil(main_canvas);
+	active_tool = new Marker(main_canvas);
 	Pixel start = Pixel(10, 10);
 	Pixel size = Pixel(20, 20);
 	palette->push_back(new Button(0xFF0000, start, start + size, CHANGE_COLOUR));
@@ -45,6 +51,11 @@ void Application::start() {
 	palette->push_back(new Button(0x00FFFF, Pixel(start.x + size.x * 5, start.y), Pixel(start.x + size.x * 5, start.y) + size, CHANGE_COLOUR));
 	palette->push_back(new Button(0xFFFF00, Pixel(start.x + size.x * 6, start.y), Pixel(start.x + size.x * 6, start.y) + size, CHANGE_COLOUR));
 	palette->push_back(new Button(0xFF00FF, Pixel(start.x + size.x * 7, start.y), Pixel(start.x + size.x * 7, start.y) + size, CHANGE_COLOUR));
+
+	start = Pixel(10, 40);
+	palette->push_back(new Button_tool(display.load_texture("pic/pencil"), start, start + size, CHANGE_TO_PENCIL));
+	palette->push_back(new Button_tool(display.load_texture("pic/marker"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
+
 	loop();
 }
 
@@ -53,7 +64,7 @@ void Application::draw_everything() {
 	// wyswietl obszar plotna
 	SDL_Rect dstrect = { 0, MENU_HEIGHT, main_canvas->surface->w,main_canvas->surface->h };
 	SDL_BlitSurface(main_canvas->surface, NULL, display.window_surface, &dstrect);
-	for (Button* c : *palette) {
+	for (GUIelement* c : *palette) {
 		c->draw(&display);
 	}
 
@@ -70,12 +81,25 @@ void Application::handle_events() {
 			mouse_position = Pixel(e.motion.x, e.motion.y);
 			cout << mouse_position.x << ", " << mouse_position.y << endl;
 		}
+		else if (e.type == CHANGE_TO_PENCIL)
+		{
+			delete active_tool;
+			active_tool = new Pencil(main_canvas);
+
+		}
+		else if (e.type == CHANGE_TO_MARKER)
+		{
+			delete active_tool;
+			active_tool = new Marker(main_canvas);
+
+		}
 		else {
 			active_tool->handle_event(e);
-			for (Button* c : *palette) {
+			for (GUIelement* c : *palette) {
 				c->handle_event(e);
 			}
 		}
+				
 	}
 }
 

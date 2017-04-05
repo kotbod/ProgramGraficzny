@@ -15,7 +15,7 @@ private:
 	Canvas *main_canvas;
 	Display display;
 	Tool *active_tool;
-	vector<Button*> *palette;
+	vector<GUIelement*> *palette;
 	SDL_Event* mainEvent = new SDL_Event();
 	bool quit;
 public:
@@ -23,6 +23,8 @@ public:
 	~Application();
 
 	static int CHANGE_COLOUR;
+	static int CHANGE_TO_PENCIL;
+	static int CHANGE_TO_MARKER;
 
 	void start();
 	void set_up_events();

@@ -14,8 +14,8 @@ Display::Display(int width, int height) {
 }
 
 Display::~Display() {
-	for (SDL_Texture* texture : texture_pool) {
-		SDL_DestroyTexture(texture);
+	for (SDL_Surface* texture : texture_pool) {
+		SDL_FreeSurface(texture);
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -30,17 +30,17 @@ SDL_Window* Display::get_window() {
 	return window;
 }
 
-SDL_Texture* Display::load_texture(std::string path) {
-	SDL_Texture* texture;
+SDL_Surface* Display::load_texture(std::string path) {
+	//SDL_Texture* texture;
 	SDL_Surface* surface = SDL_LoadBMP(path.c_str());
 	if (surface == nullptr) {
 		std::cout << "Nie mozna otworzyc " << path << std::endl;
 		return nullptr;
 	}	
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_FreeSurface(surface);
-	texture_pool.push_back(texture);
-	return texture;
+	//texture = SDL_CreateTextureFromSurface(renderer, surface);
+	//SDL_FreeSurface(surface);
+	texture_pool.push_back(surface);
+	return surface;
 }
 
 void Display::update() {
