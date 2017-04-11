@@ -9,7 +9,7 @@ struct Colour {
 
 Canvas::Canvas(int width_of_canvas, int height_of_canvas)
 {
-	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24,0x00000FF,0x0000FF00,0x00FF0000,0);
+	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24,0x00FF0000,0x0000FF00,0x000000FF,0);
 	SDL_Rect r = { 0, 0, width_of_canvas, height_of_canvas };
 	SDL_FillRect(surface, &r, WHITE);
 
@@ -32,13 +32,16 @@ void Canvas::set_pixel(Pixel pos, int colour)
 	*target = our_colour;
 	SDL_UnlockSurface(surface);
 }
-void Canvas::draw_line(Pixel P1, Pixel P2, int colour) {
+void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 	double x = P2.x - P1.x;
 	double y = P2.y - P1.y;
 	double length = sqrt(x*x + y*y);
 
+
 	if (length < 1)
 	{
+		SDL_Rect rect = { x, y, width, width };
+		SDL_FillRect(surface, &rect, colour);
 		set_pixel(P1, colour);
 		return; 
 
@@ -52,9 +55,16 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour) {
 
 	for (double i = 0; i < length; i += 1)
 	{
-		set_pixel(Pixel((int)x, (int)y),colour);
+		SDL_Rect rect = { x, y, width, width };
+		SDL_FillRect(surface, &rect, colour);
 		x += addx;
 		y += addy;
 	}
+
+}
+void Canvas::clear()
+{
+	SDL_Rect rect = { 0, 0,surface->w, surface->h };
+	SDL_FillRect(surface, &rect, 0xFFFFFF);
 
 }

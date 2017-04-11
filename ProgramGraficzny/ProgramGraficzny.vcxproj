@@ -163,9 +163,11 @@
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="Button_tool.h" />
+    <ClInclude Include="Button_width.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="display.h" />
+    <ClInclude Include="Eraser.h" />
     <ClInclude Include="GUIelement.h" />
     <ClInclude Include="Marker.h" />
     <ClInclude Include="pencil.h" />
@@ -179,10 +181,12 @@
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="display.cpp" />
+    <ClCompile Include="Eraser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Marker.cpp" />
     <ClCompile Include="pencil.cpp" />
     <ClCompile Include="pixel.cpp" />
+    <ClCompile Include="Button_width.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,8 @@ public:
 	Canvas(int width_of_canvas, int height_of_canvas) ;
 	~Canvas();
 	void set_pixel(Pixel pos, int color);
-	void draw_line(Pixel P1, Pixel P2, int color);
+	void draw_line(Pixel P1, Pixel P2, int color, int width);
+	void clear();
 };
 
 

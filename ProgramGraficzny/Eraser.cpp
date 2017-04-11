@@ -1,9 +1,17 @@
-#include "Marker.h"
+#include "Eraser.h"
+#include"Canvas.h"
+
+Eraser::Eraser(Canvas * canvas): Pencil(canvas)
+{
+}
+
+Eraser::~Eraser()
+{
+}
 
 
-Marker::Marker(Canvas * canvas) :Pencil( canvas) {}
-
-void Marker::update() {
+void Eraser::update()
+{
 	if (left_click) {
 		// rysujemy
 		Pixel temp = Pixel(1, 1);
@@ -11,9 +19,7 @@ void Marker::update() {
 		if (pos.y > 0 && previous_pos.y > 0 && pos.x>0 && previous_pos.x>0 && pos.y<canvas->surface->h && previous_pos.y < canvas->surface->h && pos.x<canvas->surface->w && previous_pos.x < canvas->surface->w)
 		{
 			//rysujemy linie
-			canvas->draw_line(previous_pos, pos, colour, 1);
-			canvas->draw_line(previous_pos+temp, pos+temp, colour,1);
-			canvas->draw_line(previous_pos-temp, pos-temp, colour,1);
+			canvas->draw_line(previous_pos, pos, 0xFFFFFF, 5);
 		}
 		previous_pos = pos;
 	}

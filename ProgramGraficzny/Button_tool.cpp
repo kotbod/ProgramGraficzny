@@ -30,8 +30,6 @@ void Button_tool::handle_event(SDL_Event &e)
 void Button_tool::draw(Display* display)
 
 {
-	const SDL_Rect rect = { top_left.x,top_left.y,bottom_right.x - top_left.x,bottom_right.y - top_left.y };
-	const SDL_Rect srcrect = { 0, 0, Picture->w, Picture->h };
-	//SDL_BlitSurface(Picture, &srcrect, display->)
-	SDL_FillRect(display->window_surface, &rect, 0xFFFFFF);
+	SDL_Rect rect = { top_left.x,top_left.y,bottom_right.x - top_left.x,bottom_right.y - top_left.y };
+	SDL_BlitScaled(Picture, NULL, display->window_surface, &rect);
 }

@@ -23,8 +23,11 @@ public:
 	~Application();
 
 	static int CHANGE_COLOUR;
+	static int CHANGE_WIDTH;
 	static int CHANGE_TO_PENCIL;
 	static int CHANGE_TO_MARKER;
+	static int CHANGE_TO_ERASER;
+	static int NEW_FILE;
 
 	void start();
 	void set_up_events();

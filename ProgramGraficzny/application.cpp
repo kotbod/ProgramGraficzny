@@ -9,6 +9,8 @@
 #include"Button.h"
 #include "Button_tool.h"
 #include"Marker.h"
+#include"Eraser.h"
+#include"Button_width.h"
 
 #define MENU_HEIGHT 70
 
@@ -20,13 +22,19 @@ const int SCREEN_HEIGHT = 400;
 Pixel Application::mouse_position;
 
 int Application::CHANGE_COLOUR;
+int Application::CHANGE_WIDTH;
 int Application::CHANGE_TO_PENCIL;
 int Application::CHANGE_TO_MARKER;
+int Application::CHANGE_TO_ERASER;
+int Application::NEW_FILE;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
 	CHANGE_TO_PENCIL = SDL_RegisterEvents(1);
 	CHANGE_TO_MARKER = SDL_RegisterEvents(1);
+	CHANGE_TO_ERASER = SDL_RegisterEvents(1);
+	NEW_FILE = SDL_RegisterEvents(1);
+	CHANGE_WIDTH = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -53,8 +61,18 @@ void Application::start() {
 	palette->push_back(new Button(0xFF00FF, Pixel(start.x + size.x * 7, start.y), Pixel(start.x + size.x * 7, start.y) + size, CHANGE_COLOUR));
 
 	start = Pixel(10, 40);
-	palette->push_back(new Button_tool(display.load_texture("pic/pencil"), start, start + size, CHANGE_TO_PENCIL));
-	palette->push_back(new Button_tool(display.load_texture("pic/marker"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
+	palette->push_back(new Button_tool(display.load_texture("pic/pencil.bmp"), start, start + size, CHANGE_TO_PENCIL));
+	palette->push_back(new Button_tool(display.load_texture("pic/marker.bmp"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
+	palette->push_back(new Button_tool(display.load_texture("pic/eraser.bmp"), Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_TO_ERASER));
+	palette->push_back(new Button_tool(display.load_texture("pic/new_file.bmp"), Pixel(start.x + size.x * 3, start.y), Pixel(start.x + size.x * 3, start.y) + size, NEW_FILE));
+	
+	start = Pixel(200, 5);
+	size = Pixel(38, 15);
+
+	palette->push_back(new Button_width(1,display.load_texture("pic/line1.bmp"), start, start + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(3,display.load_texture("pic/line2.bmp"), Pixel(start.x, start.y + size.y * 1), Pixel(start.x, start.y + size.y * 1) + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(5,display.load_texture("pic/line3.bmp"), Pixel(start.x, start.y + size.y * 2), Pixel(start.x, start.y + size.y * 2) + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(7,display.load_texture("pic/line4.bmp"), Pixel(start.x, start.y + size.y * 3), Pixel(start.x, start.y + size.y * 3) + size, CHANGE_WIDTH));
 
 	loop();
 }
@@ -91,6 +109,17 @@ void Application::handle_events() {
 		{
 			delete active_tool;
 			active_tool = new Marker(main_canvas);
+
+		}
+		else if (e.type == CHANGE_TO_ERASER)
+		{
+			delete active_tool;
+			active_tool = new Eraser(main_canvas);
+
+		}
+		else if (e.type == NEW_FILE)
+		{
+			main_canvas->clear();
 
 		}
 		else {

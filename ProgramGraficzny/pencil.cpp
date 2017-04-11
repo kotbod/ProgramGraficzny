@@ -27,7 +27,7 @@ void Pencil::update() {
 		if (pos.y > 0 && previous_pos.y > 0 && pos.x>0 &&previous_pos.x>0 && pos.y<canvas->surface->h && previous_pos.y < canvas->surface->h && pos.x<canvas->surface->w && previous_pos.x < canvas->surface->w)
 		{
 			//rysujemy linie
-			canvas->draw_line(previous_pos, pos, colour);									
+			canvas->draw_line(previous_pos, pos, colour, 1);									
 		}
 		previous_pos = pos;
 	}
