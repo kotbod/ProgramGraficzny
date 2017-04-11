@@ -27,6 +27,7 @@ public:
 	static int CHANGE_TO_PENCIL;
 	static int CHANGE_TO_MARKER;
 	static int CHANGE_TO_ERASER;
+	static int CHANGE_TO_PAINT;
 	static int NEW_FILE;
 
 	void start();

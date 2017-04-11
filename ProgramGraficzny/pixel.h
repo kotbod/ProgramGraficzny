@@ -6,7 +6,7 @@ public:
 	int y;
 	
 	Pixel();
-	Pixel(Pixel& p);
+	Pixel(const Pixel& p);
 	Pixel(Pixel&& p);
 	Pixel operator=(Pixel & p);
 	Pixel operator-(Pixel & p);

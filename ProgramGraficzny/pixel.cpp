@@ -2,7 +2,7 @@
 
 Pixel::Pixel(): Pixel(0, 0) {}
 Pixel::Pixel(int x, int y): x(x), y(y) {}
-Pixel::Pixel(Pixel& p) {
+Pixel::Pixel(const Pixel& p) {
 	x = p.x;
 	y = p.y;
 }

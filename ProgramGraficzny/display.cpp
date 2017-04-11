@@ -3,6 +3,7 @@
 #include <string>
 #include <SDL.h>
 #include "display.h"
+#include <SDL_image.h>
 
 Display::Display(int width, int height) {
 	window = SDL_CreateWindow("Program graficzny", 200, 200, width, height, SDL_WINDOW_MAXIMIZED);
@@ -32,7 +33,7 @@ SDL_Window* Display::get_window() {
 
 SDL_Surface* Display::load_texture(std::string path) {
 	//SDL_Texture* texture;
-	SDL_Surface* surface = SDL_LoadBMP(path.c_str());
+	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == nullptr) {
 		std::cout << "Nie mozna otworzyc " << path << std::endl;
 		return nullptr;

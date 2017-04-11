@@ -11,6 +11,8 @@
 #include"Marker.h"
 #include"Eraser.h"
 #include"Button_width.h"
+#include "paint.h"
+#include "nfd.h"
 
 #define MENU_HEIGHT 70
 
@@ -26,6 +28,7 @@ int Application::CHANGE_WIDTH;
 int Application::CHANGE_TO_PENCIL;
 int Application::CHANGE_TO_MARKER;
 int Application::CHANGE_TO_ERASER;
+int Application::CHANGE_TO_PAINT;
 int Application::NEW_FILE;
 
 void Application::set_up_events() {
@@ -35,6 +38,7 @@ void Application::set_up_events() {
 	CHANGE_TO_ERASER = SDL_RegisterEvents(1);
 	NEW_FILE = SDL_RegisterEvents(1);
 	CHANGE_WIDTH = SDL_RegisterEvents(1);
+	CHANGE_TO_PAINT = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -47,6 +51,8 @@ Application::~Application() {
 }
 
 void Application::start() {
+	//nfdchar_t *outPath = NULL;
+	//nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
 	main_canvas = new Canvas(400, 400);
 	active_tool = new Marker(1,main_canvas);
 	Pixel start = Pixel(10, 10);
@@ -65,7 +71,8 @@ void Application::start() {
 	palette->push_back(new Button_tool(display.load_texture("pic/marker.bmp"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
 	palette->push_back(new Button_tool(display.load_texture("pic/eraser.bmp"), Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_TO_ERASER));
 	palette->push_back(new Button_tool(display.load_texture("pic/new_file.bmp"), Pixel(start.x + size.x * 3, start.y), Pixel(start.x + size.x * 3, start.y) + size, NEW_FILE));
-	
+	palette->push_back(new Button_tool(display.load_texture("pic/paint.jpg"), Pixel(start.x + size.x * 4, start.y), Pixel(start.x + size.x * 4, start.y) + size, CHANGE_TO_PAINT));
+
 	start = Pixel(200, 5);
 	size = Pixel(38, 15);
 
@@ -97,7 +104,6 @@ void Application::handle_events() {
 		}
 		else if (e.type == SDL_MOUSEMOTION) {
 			mouse_position = Pixel(e.motion.x, e.motion.y);
-			cout << mouse_position.x << ", " << mouse_position.y << endl;
 		}
 		else if (e.type == CHANGE_TO_PENCIL)
 		{
@@ -121,6 +127,10 @@ void Application::handle_events() {
 		{
 			main_canvas->clear();
 
+		}
+		else if (e.type == CHANGE_TO_PAINT) {
+			delete active_tool;
+			active_tool = new Paint(main_canvas);
 		}
 		else {
 			active_tool->handle_event(e);
