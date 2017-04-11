@@ -9,11 +9,12 @@
 class Pencil : public Tool {
 protected:
 	int colour=0;
+	int width = 1;
 	Canvas* canvas;
 	bool left_click;
 	Pixel previous_pos;
 public:
-	Pencil(Canvas* canvas);
+	Pencil(int width,Canvas* canvas);
 
 	virtual void handle_event(SDL_Event& e);
 	virtual void update();

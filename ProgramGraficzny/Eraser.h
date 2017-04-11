@@ -5,7 +5,7 @@ class Eraser :public Pencil
 {
 public:
 
-	Eraser(Canvas *canvas);
+	Eraser(int width,Canvas *canvas);
 	~Eraser();
 	virtual void update();
 };

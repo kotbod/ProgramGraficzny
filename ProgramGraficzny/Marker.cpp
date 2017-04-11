@@ -1,7 +1,7 @@
 #include "Marker.h"
 
 
-Marker::Marker(Canvas * canvas) :Pencil( canvas) {}
+Marker::Marker(int width, Canvas * canvas) :Pencil( width,canvas) {}
 
 void Marker::update() {
 	if (left_click) {

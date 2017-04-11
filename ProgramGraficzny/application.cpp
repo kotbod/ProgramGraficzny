@@ -48,7 +48,7 @@ Application::~Application() {
 
 void Application::start() {
 	main_canvas = new Canvas(400, 400);
-	active_tool = new Marker(main_canvas);
+	active_tool = new Marker(1,main_canvas);
 	Pixel start = Pixel(10, 10);
 	Pixel size = Pixel(20, 20);
 	palette->push_back(new Button(0xFF0000, start, start + size, CHANGE_COLOUR));
@@ -102,19 +102,19 @@ void Application::handle_events() {
 		else if (e.type == CHANGE_TO_PENCIL)
 		{
 			delete active_tool;
-			active_tool = new Pencil(main_canvas);
+			active_tool = new Pencil(1,main_canvas);
 
 		}
 		else if (e.type == CHANGE_TO_MARKER)
 		{
 			delete active_tool;
-			active_tool = new Marker(main_canvas);
+			active_tool = new Marker(1,main_canvas);
 
 		}
 		else if (e.type == CHANGE_TO_ERASER)
 		{
 			delete active_tool;
-			active_tool = new Eraser(main_canvas);
+			active_tool = new Eraser(5,main_canvas);
 
 		}
 		else if (e.type == NEW_FILE)
