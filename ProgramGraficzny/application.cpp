@@ -147,7 +147,7 @@ void Application::handle_events() {
 		else if (e.type == OPEN) {
 			nfdchar_t *outPath = NULL;
 			nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
-			if (result) {
+			if (outPath!=NULL) {
 				cout << outPath << endl;
 				main_canvas->load_canvas(outPath);
 
@@ -158,9 +158,8 @@ void Application::handle_events() {
 			nfdchar_t *outPath = NULL;
 			//nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
 			nfdresult_t w = NFD_SaveDialog(NULL, NULL, &outPath);
-
+			
 			if (w) {
-				cout << outPath << endl;
 				int a = SDL_SaveBMP(main_canvas->surface, outPath);
 
 				free(outPath);
