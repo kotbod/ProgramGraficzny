@@ -13,6 +13,7 @@
 #include"Button_width.h"
 #include "paint.h"
 #include "nfd.h"
+#include "colour_display.h"
 
 #define MENU_HEIGHT 70
 
@@ -30,6 +31,8 @@ int Application::CHANGE_TO_MARKER;
 int Application::CHANGE_TO_ERASER;
 int Application::CHANGE_TO_PAINT;
 int Application::NEW_FILE;
+int Application::SAVE;
+int Application::OPEN;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
@@ -39,6 +42,8 @@ void Application::set_up_events() {
 	NEW_FILE = SDL_RegisterEvents(1);
 	CHANGE_WIDTH = SDL_RegisterEvents(1);
 	CHANGE_TO_PAINT = SDL_RegisterEvents(1);
+	SAVE = SDL_RegisterEvents(1);
+	OPEN = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -51,12 +56,11 @@ Application::~Application() {
 }
 
 void Application::start() {
-	//nfdchar_t *outPath = NULL;
-	//nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
+	
 	main_canvas = new Canvas(400, 400);
-	active_tool = new Marker(1,main_canvas);
+	active_tool = new Pencil(1,main_canvas);
 	Pixel start = Pixel(10, 10);
-	Pixel size = Pixel(20, 20);
+	Pixel size = Pixel(30, 30);
 	palette->push_back(new Button(0xFF0000, start, start + size, CHANGE_COLOUR));
 	palette->push_back(new Button(0x00FF00, Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_COLOUR));
 	palette->push_back(new Button(0x0000FF, Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_COLOUR));
@@ -67,19 +71,24 @@ void Application::start() {
 	palette->push_back(new Button(0xFF00FF, Pixel(start.x + size.x * 7, start.y), Pixel(start.x + size.x * 7, start.y) + size, CHANGE_COLOUR));
 
 	start = Pixel(10, 40);
-	palette->push_back(new Button_tool(display.load_texture("pic/pencil.bmp"), start, start + size, CHANGE_TO_PENCIL));
-	palette->push_back(new Button_tool(display.load_texture("pic/marker.bmp"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
-	palette->push_back(new Button_tool(display.load_texture("pic/eraser.bmp"), Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_TO_ERASER));
-	palette->push_back(new Button_tool(display.load_texture("pic/new_file.bmp"), Pixel(start.x + size.x * 3, start.y), Pixel(start.x + size.x * 3, start.y) + size, NEW_FILE));
-	palette->push_back(new Button_tool(display.load_texture("pic/paint.jpg"), Pixel(start.x + size.x * 4, start.y), Pixel(start.x + size.x * 4, start.y) + size, CHANGE_TO_PAINT));
-
-	start = Pixel(200, 5);
+	palette->push_back(new Button_tool(display.load_texture("pic/pencil.png"), start, start + size, CHANGE_TO_PENCIL));
+	palette->push_back(new Button_tool(display.load_texture("pic/marker.png"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
+	palette->push_back(new Button_tool(display.load_texture("pic/eraser1.png"), Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_TO_ERASER));
+	palette->push_back(new Button_tool(display.load_texture("pic/paint.png"), Pixel(start.x + size.x * 3, start.y), Pixel(start.x + size.x * 3, start.y) + size, CHANGE_TO_PAINT));
+	palette->push_back(new Button_tool(display.load_texture("pic/new_file.png"), Pixel(start.x + size.x * 4, start.y), Pixel(start.x + size.x * 4, start.y) + size, NEW_FILE));
+	palette->push_back(new Button_tool(display.load_texture("pic/DISK.png"), Pixel(start.x + size.x * 5, start.y), Pixel(start.x + size.x * 5, start.y) + size, SAVE));
+	palette->push_back(new Button_tool(display.load_texture("pic/OPEN.png"), Pixel(start.x + size.x * 6, start.y), Pixel(start.x + size.x * 6, start.y) + size, OPEN));
+	start = Pixel(270, 5);
 	size = Pixel(38, 15);
 
 	palette->push_back(new Button_width(1,display.load_texture("pic/line1.bmp"), start, start + size, CHANGE_WIDTH));
 	palette->push_back(new Button_width(3,display.load_texture("pic/line2.bmp"), Pixel(start.x, start.y + size.y * 1), Pixel(start.x, start.y + size.y * 1) + size, CHANGE_WIDTH));
 	palette->push_back(new Button_width(5,display.load_texture("pic/line3.bmp"), Pixel(start.x, start.y + size.y * 2), Pixel(start.x, start.y + size.y * 2) + size, CHANGE_WIDTH));
 	palette->push_back(new Button_width(7,display.load_texture("pic/line4.bmp"), Pixel(start.x, start.y + size.y * 3), Pixel(start.x, start.y + size.y * 3) + size, CHANGE_WIDTH));
+
+	start = Pixel(320, 10);
+	size = Pixel(40, 40);
+	palette->push_back(new ColourDisplay(0, start, size));
 
 	loop();
 }
@@ -96,6 +105,8 @@ void Application::draw_everything() {
 	display.update();
 }
 
+
+
 void Application::handle_events() {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0) {
@@ -107,6 +118,7 @@ void Application::handle_events() {
 		}
 		else if (e.type == CHANGE_TO_PENCIL)
 		{
+			
 			delete active_tool;
 			active_tool = new Pencil(1,main_canvas);
 
@@ -132,11 +144,36 @@ void Application::handle_events() {
 			delete active_tool;
 			active_tool = new Paint(main_canvas);
 		}
-		else {
-			active_tool->handle_event(e);
-			for (GUIelement* c : *palette) {
-				c->handle_event(e);
+		else if (e.type == OPEN) {
+			nfdchar_t *outPath = NULL;
+			nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
+			if (result) {
+				cout << outPath << endl;
+				main_canvas->load_canvas(outPath);
+
+				free(outPath);
 			}
+		}
+		else if (e.type == SAVE) {
+			nfdchar_t *outPath = NULL;
+			//nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
+			nfdresult_t w = NFD_SaveDialog(NULL, NULL, &outPath);
+
+			if (w) {
+				cout << outPath << endl;
+				int a = SDL_SaveBMP(main_canvas->surface, outPath);
+
+				free(outPath);
+			}
+
+		}
+		 if (e.type == CHANGE_COLOUR) {
+			current_colour = (int)e.user.data1;
+		}
+		
+		active_tool->handle_event(e);
+		for (GUIelement* c : *palette) {
+			c->handle_event(e);
 		}
 				
 	}

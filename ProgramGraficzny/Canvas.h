@@ -19,6 +19,8 @@ public:
 	void fill_at(Pixel pos, int colour);
 	void draw_line(Pixel P1, Pixel P2, int color, int width);
 	void clear();
+	void load_canvas(char* outPath);
+	
 };
 
 

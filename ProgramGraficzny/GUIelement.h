@@ -1,5 +1,6 @@
 #pragma once
 #include"display.h"
+#include "pixel.h"
 
 
 class GUIelement {

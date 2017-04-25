@@ -166,6 +166,7 @@
     <ClInclude Include="Button_width.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="colour_display.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="Eraser.h" />
     <ClInclude Include="GUIelement.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Button_tool.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="colour_display.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="Eraser.cpp" />
     <ClCompile Include="main.cpp" />

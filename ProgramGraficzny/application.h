@@ -11,6 +11,7 @@ using namespace std;
 
 class Application {
 private:
+	int current_colour;
 	static Pixel mouse_position;
 	Canvas *main_canvas;
 	Display display;
@@ -29,6 +30,8 @@ public:
 	static int CHANGE_TO_ERASER;
 	static int CHANGE_TO_PAINT;
 	static int NEW_FILE;
+	static int SAVE;
+	static int OPEN;
 
 	void start();
 	void set_up_events();
@@ -37,4 +40,5 @@ public:
 	static Pixel get_mouse_position();
 	static Pixel get_canvas_position();
 	void draw_everything();
+	void load_canvas(string outPath);
 };
