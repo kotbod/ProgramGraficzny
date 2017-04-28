@@ -9,6 +9,7 @@ void Pencil::handle_event(SDL_Event & e)
 {
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
 		left_click = true;
+		canvas->backup_surface();
 		previous_pos = Application::get_canvas_position();
 	}
 	else if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT) {
@@ -26,12 +27,9 @@ void Pencil::handle_event(SDL_Event & e)
 void Pencil::update() {
 	if (left_click) {
 		// rysujemy
-		Pixel pos = Application::get_canvas_position();
-		if (pos.y > 0 && previous_pos.y > 0 && pos.x>0 &&previous_pos.x>0 && pos.y<canvas->surface->h && previous_pos.y < canvas->surface->h && pos.x<canvas->surface->w && previous_pos.x < canvas->surface->w)
-		{
-			//rysujemy linie
-			canvas->draw_line(previous_pos, pos, colour, width);									
-		}
+		Pixel pos = Application::get_canvas_position();		
+		//rysujemy linie
+		canvas->draw_line(previous_pos, pos, colour, width);											
 		previous_pos = pos;
 	}
 }

@@ -9,23 +9,23 @@ using namespace std;
 
 Canvas::Canvas(int width_of_canvas, int height_of_canvas)
 {
-	int rmask, gmask, bmask, amask;
-	//if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-		rmask = 0x00ff0000;
-		gmask = 0x0000ff00;
-		bmask = 0x000000ff;
-	//}
-	//else {
-		//rmask = 0x000000ff;
-		//gmask = 0x0000ff00;
-		//bmask = 0x00ff0000;
-	//}
-	amask = 0;
+	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0);
 
-	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24,rmask,gmask,bmask,0);
+	SDL_Rect pixel_rect = { 0, 0, 1, 1 };
+	SDL_FillRect(surface, &pixel_rect, 0x00ff0000);
+	if (get_pixel(Pixel(0, 0)) != 0x00ff0000) {
+		SDL_FreeSurface(surface);
+		surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+		backup = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+		pixel_format_reversed = true;
+	}
+	else {
+		backup = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0);
+	}
+
 	SDL_Rect r = { 0, 0, width_of_canvas, height_of_canvas };
 	SDL_FillRect(surface, &r, WHITE);
-
+	SDL_FillRect(backup, &r, WHITE);
 }
 
 Canvas::~Canvas() {
@@ -37,15 +37,50 @@ bool Canvas::is_on_canvas(Pixel pos) {
 	return pos.x >= 0 && pos.x < surface->w && pos.y >= 0 && pos.y < surface->h;
 }
 
+bool Canvas::is_on_canvas(SDL_Rect rect) {
+	return rect.x >= 0 && rect.y >= 0 && rect.x + rect.w <= surface->w && rect.y + rect.h <= surface->h;
+}
+
+void Canvas::backup_surface() {
+	SDL_Rect r = { 0, 0, surface->w, surface->h };
+	SDL_BlitSurface(surface, &r, backup, &r);
+}
+
+void Canvas::go_back() {
+	SDL_Rect r = { 0, 0, surface->w, surface->h };
+	SDL_BlitSurface(backup, &r, surface, &r);
+}
+
 int Canvas::get_pixel(Pixel pos) {
+	if (!is_on_canvas(pos)) {
+		throw NotOnCanvas();
+	}
 	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
-	return p[2] << 16 | p[1] << 8 | p[0];	
+	if (pixel_format_reversed) {
+		return p[0] << 16 | p[1] << 8 | p[2];
+	}
+	else {
+		return p[2] << 16 | p[1] << 8 | p[0];
+		
+	}	
 }
 
 void Canvas::set_pixel(Pixel pos, int colour)
 {
-	SDL_Rect pixel_rect = { pos.x, pos.y, 1, 1 };
-	SDL_FillRect(surface, &pixel_rect, colour);		
+	if (!is_on_canvas(pos)) {
+		throw NotOnCanvas();
+	}
+	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
+	if (pixel_format_reversed) {
+		p[0] = colour >> 16;
+		p[1] = colour >> 8;
+		p[2] = colour >> 0;
+	}
+	else {
+		p[0] = colour >> 0;
+		p[1] = colour >> 8;
+		p[2] = colour >> 16;
+	}	
 }
 
 void Canvas::fill_at(Pixel pos, int colour)
@@ -82,8 +117,9 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 	if (length < 1)
 	{
 		SDL_Rect rect = { x, y, width, width };
-		SDL_FillRect(surface, &rect, colour);
-		set_pixel(P1, colour);
+		if (is_on_canvas(rect)) {
+			SDL_FillRect(surface, &rect, colour);
+		}		
 		return; 
 
 	}
@@ -97,7 +133,9 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 	for (double i = 0; i < length; i += 1)
 	{
 		SDL_Rect rect = { x, y, width, width };
-		SDL_FillRect(surface, &rect, colour);
+		if (is_on_canvas(rect)) {
+			SDL_FillRect(surface, &rect, colour);
+		}
 		x += addx;
 		y += addy;
 	}
@@ -112,6 +150,8 @@ void Canvas::clear()
 void Canvas::load_canvas(char* outPath)
 {
 	SDL_FreeSurface(surface);
-	surface = IMG_Load(outPath);
+	SDL_FreeSurface(backup);
+	surface = IMG_Load(outPath);	
+	backup = IMG_Load(outPath);	
 	cout << surface->w << endl;
 }

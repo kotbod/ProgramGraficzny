@@ -33,6 +33,7 @@ int Application::CHANGE_TO_PAINT;
 int Application::NEW_FILE;
 int Application::SAVE;
 int Application::OPEN;
+int Application::GO_BACK;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
@@ -44,6 +45,7 @@ void Application::set_up_events() {
 	CHANGE_TO_PAINT = SDL_RegisterEvents(1);
 	SAVE = SDL_RegisterEvents(1);
 	OPEN = SDL_RegisterEvents(1);
+	GO_BACK = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -109,6 +111,7 @@ void Application::draw_everything() {
 
 void Application::handle_events() {
 	SDL_Event e;
+	const Uint8 *keystates = SDL_GetKeyboardState(NULL);
 	while (SDL_PollEvent(&e) != 0) {
 		if (e.type == SDL_QUIT) {
 			quit = true;
@@ -138,7 +141,11 @@ void Application::handle_events() {
 		else if (e.type == NEW_FILE)
 		{
 			main_canvas->clear();
-
+			
+		}
+		else if (e.type == GO_BACK || 
+			((keystates[SDL_SCANCODE_LCTRL] || keystates[SDL_SCANCODE_RCTRL]) && e.key.keysym.scancode == SDL_SCANCODE_Z) ) {
+			main_canvas->go_back();
 		}
 		else if (e.type == CHANGE_TO_PAINT) {
 			delete active_tool;
@@ -169,12 +176,11 @@ void Application::handle_events() {
 		 if (e.type == CHANGE_COLOUR) {
 			current_colour = (int)e.user.data1;
 		}
-		
-		active_tool->handle_event(e);
+
 		for (GUIelement* c : *palette) {
-			c->handle_event(e);
+			 c->handle_event(e);
 		}
-				
+		active_tool->handle_event(e);				
 	}
 }
 

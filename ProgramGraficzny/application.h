@@ -32,6 +32,7 @@ public:
 	static int NEW_FILE;
 	static int SAVE;
 	static int OPEN;
+	static int GO_BACK;
 
 	void start();
 	void set_up_events();

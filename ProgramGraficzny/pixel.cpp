@@ -25,3 +25,8 @@ Pixel Pixel::operator+(Pixel& p) {
 	return Pixel(x + p.x, y + p.y);
 }
 
+Pixel Pixel::operator*(int i)
+{
+	return Pixel(x * i, y * i);
+}
+
