@@ -3,33 +3,49 @@
 #include <queue>
 #include<SDL_image.h>
 #include<iostream>
-
+#include<vector>
 
 using namespace std;
 
 Canvas::Canvas(int width_of_canvas, int height_of_canvas)
 {
-	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0);
+	rmask = 0x00ff0000;
+	gmask = 0x0000ff00;
+	bmask = 0x000000ff;
+	surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, rmask, gmask, bmask, 0);
 
 	SDL_Rect pixel_rect = { 0, 0, 1, 1 };
 	SDL_FillRect(surface, &pixel_rect, 0x00ff0000);
 	if (get_pixel(Pixel(0, 0)) != 0x00ff0000) {
 		SDL_FreeSurface(surface);
-		surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
-		backup = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+		surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);		
 		pixel_format_reversed = true;
+		rmask = 0x000000ff;
+		gmask = 0x0000ff00;
+		bmask = 0x00ff0000;
+		init_save_states();
 	}
 	else {
-		backup = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0);
+		init_save_states();
 	}
 
 	SDL_Rect r = { 0, 0, width_of_canvas, height_of_canvas };
 	SDL_FillRect(surface, &r, WHITE);
-	SDL_FillRect(backup, &r, WHITE);
+}
+
+void Canvas::init_save_states() {
+	amount_saved = 0;
+	saved_states = vector<SDL_Surface *>();
+	for (int i = 0; i < NUM_SAVED_STATES; i++) {
+		saved_states.push_back(SDL_CreateRGBSurface(0, surface->w, surface->h, 24, rmask, gmask, bmask, 0));
+	}	
 }
 
 Canvas::~Canvas() {
 	SDL_FreeSurface(surface);
+	for (SDL_Surface* backup : saved_states) {
+		SDL_FreeSurface(backup);
+	}
 }
 
 bool Canvas::is_on_canvas(Pixel pos) {
@@ -42,13 +58,35 @@ bool Canvas::is_on_canvas(SDL_Rect rect) {
 }
 
 void Canvas::backup_surface() {
+	amount_saved += 1;
+	if (amount_saved > NUM_SAVED_STATES) {
+		amount_saved = NUM_SAVED_STATES;
+	}
 	SDL_Rect r = { 0, 0, surface->w, surface->h };
-	SDL_BlitSurface(surface, &r, backup, &r);
+	SDL_Surface* last = saved_states[0];
+	for (int i = 1; i < saved_states.size(); i++) {		
+		saved_states[i - 1] = saved_states[i];
+		
+	}	
+	SDL_BlitSurface(surface, &r, last, &r);
+	saved_states[saved_states.size() - 1] = last;	
 }
 
 void Canvas::go_back() {
+	cout << "GO BACK" << endl;
+	if (amount_saved == 0) {
+		return;
+	}
+	amount_saved -= 1;
+
+	SDL_Surface* first = saved_states[saved_states.size() - 1];
 	SDL_Rect r = { 0, 0, surface->w, surface->h };
-	SDL_BlitSurface(backup, &r, surface, &r);
+	SDL_BlitSurface(first, &r, surface, &r);
+	
+	for (int i = saved_states.size() - 1; i > 0; i--) {
+		saved_states[i] = saved_states[i - 1];
+	}
+	saved_states[0] = first;
 }
 
 int Canvas::get_pixel(Pixel pos) {
@@ -150,8 +188,10 @@ void Canvas::clear()
 void Canvas::load_canvas(char* outPath)
 {
 	SDL_FreeSurface(surface);
-	SDL_FreeSurface(backup);
+	for (SDL_Surface* backup_surface : saved_states) {
+		SDL_FreeSurface(backup_surface);
+	}
 	surface = IMG_Load(outPath);	
-	backup = IMG_Load(outPath);	
+	init_save_states();
 	cout << surface->w << endl;
 }

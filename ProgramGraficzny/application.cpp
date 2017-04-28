@@ -144,7 +144,7 @@ void Application::handle_events() {
 			
 		}
 		else if (e.type == GO_BACK || 
-			((keystates[SDL_SCANCODE_LCTRL] || keystates[SDL_SCANCODE_RCTRL]) && e.key.keysym.scancode == SDL_SCANCODE_Z) ) {
+			((keystates[SDL_SCANCODE_LCTRL] || keystates[SDL_SCANCODE_RCTRL]) && e.key.keysym.scancode == SDL_SCANCODE_Z && e.type == SDL_KEYDOWN) ) {
 			main_canvas->go_back();
 		}
 		else if (e.type == CHANGE_TO_PAINT) {
