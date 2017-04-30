@@ -10,7 +10,7 @@ protected:
 	int colour = 0;
 	Canvas* canvas;
 public:
-	Paint(Canvas* canvas);
+	Paint(int colour, Canvas * canvas);
 	virtual void handle_event(SDL_Event& e);
 	virtual void update();
 };

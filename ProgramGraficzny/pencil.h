@@ -14,7 +14,7 @@ protected:
 	bool left_click;
 	Pixel previous_pos;
 public:
-	Pencil(int width,Canvas* canvas);
+	Pencil(int colour, int width, Canvas * canvas);
 
 	virtual void handle_event(SDL_Event& e);
 	virtual void update();

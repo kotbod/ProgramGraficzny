@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Pencil::Pencil(int width,Canvas* canvas): width(width), canvas(canvas), left_click(false) {}
+Pencil::Pencil(int colour, int width,Canvas* canvas):colour(colour), width(width), canvas(canvas), left_click(false) {}
 
 void Pencil::handle_event(SDL_Event & e)
 {

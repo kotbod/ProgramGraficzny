@@ -6,7 +6,7 @@
 class Marker :public Pencil {
 
 public:
-	Marker(int width,Canvas* canvas);
-	~Marker();
+	Marker(int colour, int width, Canvas * canvas);
+	~Marker();	
 	virtual void update();
 };

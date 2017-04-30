@@ -19,6 +19,8 @@
 
 using namespace std;
 
+const int BLACK = 0x00000000;
+
 const int SCREEN_WIDTH = 400;
 const int SCREEN_HEIGHT = 400;
 
@@ -60,7 +62,7 @@ Application::~Application() {
 void Application::start() {
 	
 	main_canvas = new Canvas(400, 400);
-	active_tool = new Pencil(1,main_canvas);
+	active_tool = new Pencil(BLACK, 1,main_canvas);
 	Pixel start = Pixel(10, 10);
 	Pixel size = Pixel(30, 30);
 	palette->push_back(new Button(0xFF0000, start, start + size, CHANGE_COLOUR));
@@ -123,19 +125,19 @@ void Application::handle_events() {
 		{
 			
 			delete active_tool;
-			active_tool = new Pencil(1,main_canvas);
+			active_tool = new Pencil(current_colour, 1,main_canvas);
 
 		}
 		else if (e.type == CHANGE_TO_MARKER)
 		{
 			delete active_tool;
-			active_tool = new Marker(1,main_canvas);
+			active_tool = new Marker(current_colour, 1,main_canvas);
 
 		}
 		else if (e.type == CHANGE_TO_ERASER)
 		{
 			delete active_tool;
-			active_tool = new Eraser(5,main_canvas);
+			active_tool = new Eraser(current_colour, 5,main_canvas);
 
 		}
 		else if (e.type == NEW_FILE)
@@ -149,7 +151,7 @@ void Application::handle_events() {
 		}
 		else if (e.type == CHANGE_TO_PAINT) {
 			delete active_tool;
-			active_tool = new Paint(main_canvas);
+			active_tool = new Paint(current_colour, main_canvas);
 		}
 		else if (e.type == OPEN) {
 			nfdchar_t *outPath = NULL;

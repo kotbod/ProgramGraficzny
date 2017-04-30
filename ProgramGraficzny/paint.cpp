@@ -1,6 +1,6 @@
 #include "paint.h"
 
-Paint::Paint(Canvas * canvas): canvas(canvas) {}
+Paint::Paint(int colour, Canvas * canvas): colour(colour), canvas(canvas) {}
 
 void Paint::handle_event(SDL_Event & e)
 {

@@ -1,7 +1,7 @@
 #include "Eraser.h"
 #include"Canvas.h"
 
-Eraser::Eraser(int width,Canvas * canvas): Pencil(width,canvas)
+Eraser::Eraser(int colour, int width,Canvas * canvas): Pencil(colour, width,canvas)
 {
 }
 
