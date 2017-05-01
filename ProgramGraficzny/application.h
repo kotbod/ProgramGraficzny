@@ -13,6 +13,7 @@ class Application {
 private:
 	int current_colour;
 	static Pixel mouse_position;
+	static Pixel canvas_mouse_pos;
 	Canvas *main_canvas;
 	Display display;
 	Tool *active_tool;

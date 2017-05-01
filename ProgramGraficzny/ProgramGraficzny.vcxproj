@@ -106,13 +106,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\biblioteki\SDL2\include;.\biblioteki\SDL2_image\include;.\biblioteki\nfd\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\biblioteki\SDL2_ttf\include; .\biblioteki\SDL2\include;.\biblioteki\SDL2_image\include;.\biblioteki\nfd\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,15 +146,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\biblioteki\SDL2\include;.\biblioteki\SDL2_image\include;.\biblioteki\nfd\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\biblioteki\SDL2_ttf\include; .\biblioteki\SDL2\include;.\biblioteki\SDL2_image\include;.\biblioteki\nfd\include;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -170,6 +170,7 @@
     <ClInclude Include="display.h" />
     <ClInclude Include="Eraser.h" />
     <ClInclude Include="GUIelement.h" />
+    <ClInclude Include="GUI_label.h" />
     <ClInclude Include="Marker.h" />
     <ClInclude Include="paint.h" />
     <ClInclude Include="pencil.h" />

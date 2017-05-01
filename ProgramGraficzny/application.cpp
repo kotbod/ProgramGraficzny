@@ -14,6 +14,7 @@
 #include "paint.h"
 #include "nfd.h"
 #include "colour_display.h"
+#include "GUI_label.h"
 
 #define MENU_HEIGHT 70
 
@@ -25,6 +26,7 @@ const int SCREEN_WIDTH = 400;
 const int SCREEN_HEIGHT = 400;
 
 Pixel Application::mouse_position;
+Pixel Application::canvas_mouse_pos;
 
 int Application::CHANGE_COLOUR;
 int Application::CHANGE_WIDTH;
@@ -95,6 +97,8 @@ void Application::start() {
 	size = Pixel(40, 40);
 	palette->push_back(new ColourDisplay(0, start, size));
 
+	palette->push_back(new GUI_label<Pixel>(&canvas_mouse_pos, Pixel(0, 400 + MENU_HEIGHT + 10), 18));
+
 	loop();
 }
 
@@ -121,6 +125,7 @@ void Application::handle_events() {
 		}
 		else if (e.type == SDL_MOUSEMOTION) {
 			mouse_position = Pixel(e.motion.x, e.motion.y);
+			canvas_mouse_pos = mouse_position - Pixel(0, MENU_HEIGHT);
 		}
 		else if (e.type == CHANGE_TO_PENCIL)
 		{
@@ -191,6 +196,9 @@ void Application::loop() {
 	while (!quit && mainEvent->type!=SDL_QUIT ) {
 		active_tool->update();
 		handle_events();
+		for (GUIelement* c : *palette) {
+			c->update();
+		}
 		draw_everything();
 	}
 }
@@ -201,6 +209,6 @@ Pixel Application::get_mouse_position()
 }
 
 Pixel Application::get_canvas_position() {
-	return mouse_position - Pixel(0, MENU_HEIGHT);
+	return canvas_mouse_pos;
 }
 

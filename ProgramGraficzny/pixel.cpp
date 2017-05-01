@@ -30,3 +30,18 @@ Pixel Pixel::operator*(int i)
 	return Pixel(x * i, y * i);
 }
 
+bool Pixel::operator==(Pixel &p)
+{
+	return x == p.x && y == p.y;
+}
+
+bool Pixel::operator!=(Pixel &p)
+{
+	return !(x == p.x && y == p.y);
+}
+
+std::ostream& operator<<(std::ostream& os, const Pixel& obj)
+{
+	os << "(" << obj.x << ", " << obj.y << ")";
+	return os;
+}

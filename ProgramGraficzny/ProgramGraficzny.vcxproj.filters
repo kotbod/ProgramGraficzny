@@ -63,6 +63,9 @@
     <ClInclude Include="colour_display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GUI_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">

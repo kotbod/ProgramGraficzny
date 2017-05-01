@@ -6,8 +6,6 @@
 #include"pixel.h"
 
 class	Button_tool :public GUIelement  {
-
-
 		SDL_Surface* Picture;
 		Pixel top_left;
 		Pixel bottom_right;
