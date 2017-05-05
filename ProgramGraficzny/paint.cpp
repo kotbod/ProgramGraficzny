@@ -9,7 +9,7 @@ void Paint::handle_event(SDL_Event & e)
 		canvas->fill_at(Application::get_canvas_position(), colour);
 	}
 	else if (e.type == Application::CHANGE_COLOUR) {
-		colour = (int)e.user.data1;
+		colour = *(int*)e.user.data1;
 	}
 }
 

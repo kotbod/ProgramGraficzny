@@ -22,7 +22,6 @@ private:
 	int bmask;
 
 	bool pixel_format_reversed = false;	
-	SDL_Renderer *renderer;
 	vector<SDL_Surface *> saved_states;
 	int amount_saved = 0;
 public:

@@ -6,6 +6,7 @@ Button_tool::Button_tool(SDL_Surface* Picture, Pixel top_left, Pixel bottom_righ
 
 Button_tool::~Button_tool()
 {
+	// Picture powinno byæ wczytane przez Display::load_texture() i zwalniane w tej klasie
 }
 
 void Button_tool::update()

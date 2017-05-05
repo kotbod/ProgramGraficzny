@@ -113,6 +113,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/verbose:lib</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,6 +156,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/verbose:lib</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -165,7 +167,7 @@
     <ClInclude Include="Button_tool.h" />
     <ClInclude Include="Button_width.h" />
     <ClInclude Include="Canvas.h" />
-    <ClInclude Include="Button.h" />
+    <ClInclude Include="Button_colour.h" />
     <ClInclude Include="colour_display.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="Eraser.h" />
@@ -182,7 +184,7 @@
     <ClCompile Include="application.cpp" />
     <ClCompile Include="Button_tool.cpp" />
     <ClCompile Include="Canvas.cpp" />
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Button_colour.cpp" />
     <ClCompile Include="colour_display.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="Eraser.cpp" />

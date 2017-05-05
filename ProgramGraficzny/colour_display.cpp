@@ -15,7 +15,7 @@ void ColourDisplay::update()
 void ColourDisplay::handle_event(SDL_Event & e)
 {
 	if (e.type == Application::CHANGE_COLOUR) {
-		colour = (int)e.user.data1;
+		colour = *(int*)e.user.data1;
 		cout << colour << endl;
 	}
 }

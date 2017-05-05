@@ -2,6 +2,7 @@
 
 
 Marker::Marker(int colour, int width, Canvas * canvas) :Pencil(colour, width,canvas) {}
+Marker::~Marker() {}
 
 void Marker::update() {
 	if (left_click) {

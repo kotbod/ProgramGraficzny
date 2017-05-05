@@ -4,8 +4,7 @@
 #include "Canvas.h"
 #include "display.h"
 #include "tool.h"
-#include "pencil.h"
-#include"Button.h"
+#include "GUIelement.h"
 
 using namespace std;
 
@@ -18,7 +17,6 @@ private:
 	Display display;
 	Tool *active_tool;
 	vector<GUIelement*> *palette;
-	SDL_Event* mainEvent = new SDL_Event();
 	bool quit;
 public:
 	Application(void);
@@ -42,5 +40,4 @@ public:
 	static Pixel get_mouse_position();
 	static Pixel get_canvas_position();
 	void draw_everything();
-	void load_canvas(string outPath);
 };

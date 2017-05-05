@@ -6,6 +6,7 @@ Button_width::Button_width(int width, SDL_Surface*surface,Pixel top_left, Pixel 
 
 Button_width::~Button_width()
 {
+	// surface powinno byæ wczytane przez Display::load_texture() i zwalniane w tej klasie
 }
 
 void Button_width::update()
@@ -20,7 +21,7 @@ void Button_width::handle_event(SDL_Event & e)
 		SDL_Event event;
 		SDL_memset(&event, 0, sizeof(event)); /* or SDL_zero(event) */
 		event.type = event_type;
-		event.user.data1 = (void*)width;
+		event.user.data1 = (void*)(&width);
 		SDL_PushEvent(&event);
 	}
 }

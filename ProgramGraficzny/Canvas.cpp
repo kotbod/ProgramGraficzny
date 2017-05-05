@@ -83,7 +83,7 @@ void Canvas::go_back() {
 	SDL_Rect r = { 0, 0, surface->w, surface->h };
 	SDL_BlitSurface(first, &r, surface, &r);
 	
-	for (int i = saved_states.size() - 1; i > 0; i--) {
+	for (size_t i = saved_states.size() - 1; i > 0; i--) {
 		saved_states[i] = saved_states[i - 1];
 	}
 	saved_states[0] = first;
@@ -181,6 +181,7 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 }
 void Canvas::clear()
 {
+	backup_surface();
 	SDL_Rect rect = { 0, 0,surface->w, surface->h };
 	SDL_FillRect(surface, &rect, 0xFFFFFF);
 

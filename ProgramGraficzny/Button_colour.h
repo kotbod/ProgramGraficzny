@@ -4,7 +4,7 @@
 #include"display.h"
 #include"pixel.h"
 
-class Button : public GUIelement {
+class Button_colour : public GUIelement {
 
 
 	int colour;
@@ -14,8 +14,8 @@ class Button : public GUIelement {
 public:
 
 
-	Button(int colour,Pixel top_left, Pixel bottom_right, int event_type);
-	~Button();
+	Button_colour(int colour,Pixel top_left, Pixel bottom_right, int event_type);
+	~Button_colour();
 
 	virtual void update();
 	virtual void handle_event(SDL_Event &e);

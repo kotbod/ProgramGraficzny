@@ -16,10 +16,10 @@ void Pencil::handle_event(SDL_Event & e)
 		left_click = false;
 	}
 	else if (e.type == Application::CHANGE_COLOUR) {
-		colour = (int)e.user.data1;
+		colour = *(int*)e.user.data1;
 	}
 	else if (e.type == Application::CHANGE_WIDTH) {
-		width = (int)e.user.data1;
+		width = *(int*)e.user.data1;
 	}
 
 }

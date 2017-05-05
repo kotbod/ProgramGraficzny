@@ -4,7 +4,6 @@
 #include "tool.h"
 #include "Canvas.h"
 #include "application.h"
-#include"Button.h"
 
 class Pencil : public Tool {
 protected:

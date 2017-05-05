@@ -20,6 +20,7 @@ Display::~Display() {
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	SDL_FreeSurface(window_surface);
 
 }
 
@@ -32,14 +33,11 @@ SDL_Window* Display::get_window() {
 }
 
 SDL_Surface* Display::load_texture(std::string path) {
-	//SDL_Texture* texture;
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == nullptr) {
 		std::cout << "Nie mozna otworzyc " << path << std::endl;
 		return nullptr;
 	}	
-	//texture = SDL_CreateTextureFromSurface(renderer, surface);
-	//SDL_FreeSurface(surface);
 	texture_pool.push_back(surface);
 	return surface;
 }
@@ -47,8 +45,6 @@ SDL_Surface* Display::load_texture(std::string path) {
 void Display::update() {
 	SDL_UpdateWindowSurface(window);
 	SDL_RenderClear(renderer);
-
 	SDL_RenderPresent(renderer);
-
 }
 
