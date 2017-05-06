@@ -6,7 +6,7 @@
 using namespace std;
 
 const Uint32 WHITE = 0xFFFFFF;
-const int NUM_SAVED_STATES = 200;
+const int MEMORY_FOR_SAVED_STATES = 300000000;
 
 class NotOnCanvas : public exception {
 	virtual const char* what() noexcept {

@@ -5,8 +5,6 @@
 #include"pixel.h"
 
 class Button_colour : public GUIelement {
-
-
 	int colour;
 	Pixel top_left;
 	Pixel bottom_right;

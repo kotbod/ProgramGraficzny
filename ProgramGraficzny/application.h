@@ -5,6 +5,8 @@
 #include "display.h"
 #include "tool.h"
 #include "GUIelement.h"
+#include "warning.h"
+#include "GUI_label.h"
 
 using namespace std;
 
@@ -17,6 +19,8 @@ private:
 	Display display;
 	Tool *active_tool;
 	vector<GUIelement*> *palette;
+	Warning *warning;
+	GUI_label<Pixel> *coords_label;
 	bool quit;
 public:
 	Application(void);
@@ -32,12 +36,14 @@ public:
 	static int SAVE;
 	static int OPEN;
 	static int GO_BACK;
+	static int YES;
+	static int NO;
 
 	void start();
 	void set_up_events();
 	void handle_events();
 	void loop();
 	static Pixel get_mouse_position();
-	static Pixel get_canvas_position();
+	static Pixel get_canvas_mouse_position();
 	void draw_everything();
 };

@@ -5,8 +5,12 @@
 #include "display.h"
 #include <SDL_image.h>
 
-Display::Display(int width, int height) {
-	window = SDL_CreateWindow("Program graficzny", 200, 200, width, height, SDL_WINDOW_MAXIMIZED);
+Display::Display(int width, int height) : Display(width, height, true) {}
+
+Display::Display(int width, int height, bool fullscreen) {
+	SDL_WindowFlags window_flag;
+	window_flag = fullscreen ? SDL_WINDOW_MAXIMIZED : SDL_WINDOW_SHOWN;
+	window = SDL_CreateWindow("Program graficzny", 200, 200, width, height, window_flag);
 	window_surface = SDL_GetWindowSurface(window);
 	
 	renderer = SDL_CreateSoftwareRenderer(window_surface);
@@ -19,9 +23,8 @@ Display::~Display() {
 		SDL_FreeSurface(texture);
 	}
 	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
 	SDL_FreeSurface(window_surface);
-
+	SDL_DestroyWindow(window);	
 }
 
 SDL_Renderer* Display::get_renderer() {

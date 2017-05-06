@@ -27,6 +27,8 @@ public:
 	virtual void update();
 	virtual void handle_event(SDL_Event &e);
 	virtual void draw(Display* display);
+
+	void change_position(Pixel new_pos);
 };
 
 template<typename T> 
@@ -69,4 +71,9 @@ void GUI_label<T>::draw(Display* display) {
 	SDL_Rect src = { 0, 0, surface->w, surface->h };
 	SDL_Rect dst = { top_left.x, top_left.y, surface->w, surface->h };
 	SDL_BlitSurface(surface, &src, display->window_surface, &dst);
+}
+
+template<typename T>
+void GUI_label<T>::change_position(Pixel new_pos) {
+	top_left = new_pos;
 }

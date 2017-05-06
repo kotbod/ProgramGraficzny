@@ -15,6 +15,7 @@
 #include "nfd.h"
 #include "colour_display.h"
 #include "GUI_label.h"
+#include "warning.h"
 
 #define MENU_HEIGHT 70
 
@@ -38,6 +39,8 @@ int Application::NEW_FILE;
 int Application::SAVE;
 int Application::OPEN;
 int Application::GO_BACK;
+int Application::YES;
+int Application::NO;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
@@ -50,11 +53,15 @@ void Application::set_up_events() {
 	SAVE = SDL_RegisterEvents(1);
 	OPEN = SDL_RegisterEvents(1);
 	GO_BACK = SDL_RegisterEvents(1);
+	YES = SDL_RegisterEvents(1);
+	NO = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
 	set_up_events();
 	palette = new vector<GUIelement*>();
+	main_canvas = new Canvas(400, 400);
+	active_tool = new Pencil(BLACK, 1, main_canvas);
 }
 Application::~Application() {
 	delete main_canvas;
@@ -66,9 +73,6 @@ Application::~Application() {
 }
 
 void Application::start() {
-	
-	main_canvas = new Canvas(400, 400);
-	active_tool = new Pencil(BLACK, 1,main_canvas);
 	Pixel start = Pixel(10, 10);
 	Pixel size = Pixel(30, 30);
 	palette->push_back(new Button_colour(0xFF0000, start, start + size, CHANGE_COLOUR));
@@ -101,7 +105,8 @@ void Application::start() {
 	size = Pixel(40, 40);
 	palette->push_back(new ColourDisplay(0, start, size));
 
-	palette->push_back(new GUI_label<Pixel>(&canvas_mouse_pos, Pixel(0, 400 + MENU_HEIGHT + 10), 18));
+	coords_label = new GUI_label<Pixel>(&canvas_mouse_pos, Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10), 18);
+	palette->push_back(coords_label);
 
 	loop();
 }
@@ -124,7 +129,7 @@ void Application::handle_events() {
 	SDL_Event e;
 	const Uint8 *keystates = SDL_GetKeyboardState(NULL);
 	while (SDL_PollEvent(&e) != 0) {
-		if (e.type == SDL_QUIT) {
+		if (e.type == SDL_QUIT) {		
 			quit = true;
 		}
 		else if (e.type == SDL_MOUSEMOTION) {
@@ -169,6 +174,7 @@ void Application::handle_events() {
 			if (outPath!=NULL) {
 				cout << outPath << endl;
 				main_canvas->load_canvas(outPath);
+				coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
 				free(outPath);
 			}
 		}
@@ -197,6 +203,13 @@ void Application::loop() {
 	while (!quit) {
 		active_tool->update();
 		handle_events();
+		/*if (quit) {
+			warning = new Warning("Czy na pewno chcesz wyjsc?");
+			if (!warning->show()) {
+				quit = false;
+			}
+			delete warning;
+		}*/
 		for (GUIelement* c : *palette) {
 			c->update();
 		}
@@ -209,7 +222,7 @@ Pixel Application::get_mouse_position()
 	return mouse_position;
 }
 
-Pixel Application::get_canvas_position() {
+Pixel Application::get_canvas_mouse_position() {
 	return canvas_mouse_pos;
 }
 

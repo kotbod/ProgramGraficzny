@@ -113,7 +113,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/verbose:lib</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -156,7 +157,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\biblioteki\SDL2_ttf\lib\x64lib; .\biblioteki\SDL2_image\lib\x64lib;.\biblioteki\SDL2\lib\x64lib;.\biblioteki\nfd\lib\x64lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;nfd.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/verbose:lib</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -179,6 +181,7 @@
     <ClInclude Include="pixel.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tool.h" />
+    <ClInclude Include="warning.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
@@ -194,6 +197,7 @@
     <ClCompile Include="pencil.cpp" />
     <ClCompile Include="pixel.cpp" />
     <ClCompile Include="Button_width.cpp" />
+    <ClCompile Include="warning.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -66,6 +66,9 @@
     <ClInclude Include="Button_colour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="warning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -105,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Button_colour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="warning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

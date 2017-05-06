@@ -15,6 +15,7 @@ private:
 	std::vector<SDL_Surface*> texture_pool;
 public:
 	Display(int width, int height);
+	Display(int width, int height, bool fullscreen);
 	~Display();
 
 	SDL_Renderer* get_renderer();

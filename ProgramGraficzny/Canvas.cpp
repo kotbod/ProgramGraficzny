@@ -35,8 +35,9 @@ Canvas::Canvas(int width_of_canvas, int height_of_canvas)
 
 void Canvas::init_save_states() {
 	amount_saved = 0;
+	int surface_size = surface->w * surface->h * 3;
 	saved_states = vector<SDL_Surface *>();
-	for (int i = 0; i < NUM_SAVED_STATES; i++) {
+	for (int i = 0; i < MEMORY_FOR_SAVED_STATES; i+= surface_size) {
 		saved_states.push_back(SDL_CreateRGBSurface(0, surface->w, surface->h, 24, rmask, gmask, bmask, 0));
 	}	
 }
@@ -59,8 +60,8 @@ bool Canvas::is_on_canvas(SDL_Rect rect) {
 
 void Canvas::backup_surface() {
 	amount_saved += 1;
-	if (amount_saved > NUM_SAVED_STATES) {
-		amount_saved = NUM_SAVED_STATES;
+	if (amount_saved > saved_states.size()) {
+		amount_saved = saved_states.size();
 	}
 	SDL_Rect r = { 0, 0, surface->w, surface->h };
 	SDL_Surface* last = saved_states[0];
@@ -73,7 +74,6 @@ void Canvas::backup_surface() {
 }
 
 void Canvas::go_back() {
-	cout << "GO BACK" << endl;
 	if (amount_saved == 0) {
 		return;
 	}
@@ -154,7 +154,7 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 
 	if (length < 1)
 	{
-		SDL_Rect rect = { x, y, width, width };
+		SDL_Rect rect = { P1.x, P1.y, width, width };
 		if (is_on_canvas(rect)) {
 			SDL_FillRect(surface, &rect, colour);
 		}		
@@ -170,7 +170,7 @@ void Canvas::draw_line(Pixel P1, Pixel P2, int colour, int width) {
 
 	for (double i = 0; i < length; i += 1)
 	{
-		SDL_Rect rect = { x, y, width, width };
+		SDL_Rect rect = { (int)x, (int)y, width, width };
 		if (is_on_canvas(rect)) {
 			SDL_FillRect(surface, &rect, colour);
 		}
