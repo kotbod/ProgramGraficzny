@@ -123,6 +123,32 @@ void Application::draw_everything() {
 	display.update();
 }
 
+void Application::load() {
+	nfdchar_t *outPath = NULL;
+	nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
+	if (outPath != NULL) {
+		cout << outPath << endl;
+		main_canvas->load_canvas(outPath);
+		coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
+		free(outPath);
+	}
+	else {
+		throw NoOpenPath();
+	}
+}
+
+void Application::save() {
+	nfdchar_t *outPath = NULL;
+	nfdresult_t w = NFD_SaveDialog(NULL, NULL, &outPath);
+
+	if (outPath != NULL) {
+		int a = SDL_SaveBMP(main_canvas->surface, outPath);
+		free(outPath);
+	}
+	else {
+		throw NoSavePath();
+	}
+}
 
 
 void Application::handle_events() {
@@ -169,22 +195,19 @@ void Application::handle_events() {
 			active_tool = new Paint(current_colour, main_canvas);
 		}
 		else if (e.type == OPEN) {
-			nfdchar_t *outPath = NULL;
-			nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
-			if (outPath!=NULL) {
-				cout << outPath << endl;
-				main_canvas->load_canvas(outPath);
-				coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
-				free(outPath);
+			try {
+				load();
+			}
+			catch (NoOpenPath &e) {
+				cout << e.what();
 			}
 		}
 		else if (e.type == SAVE) {
-			nfdchar_t *outPath = NULL;
-			nfdresult_t w = NFD_SaveDialog(NULL, NULL, &outPath);
-			
-			if (w) {
-				int a = SDL_SaveBMP(main_canvas->surface, outPath);
-				free(outPath);
+			try {
+				save();
+			}
+			catch (NoSavePath &e) {
+				cout << e.what();
 			}
 
 		}

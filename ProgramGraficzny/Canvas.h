@@ -8,11 +8,11 @@ using namespace std;
 const Uint32 WHITE = 0xFFFFFF;
 const int MEMORY_FOR_SAVED_STATES = 300000000;
 
-class NotOnCanvas : public exception {
+/*class NotOnCanvas : public exception {
 	virtual const char* what() noexcept {
 		return "The pixel is outside of the canvas surface";
 	}
-};
+};*/
 
 class Canvas {
 

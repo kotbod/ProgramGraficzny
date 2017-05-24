@@ -10,6 +10,18 @@
 
 using namespace std;
 
+class NoOpenPath : public exception {
+public:
+	virtual const char* what() noexcept {
+		return "Nie podano scieki pliku!";
+	}
+};
+class NoSavePath : public exception {
+public:
+	virtual const char* what() noexcept {
+		return "Nie podano scieki pliku!";
+	}
+};
 class Application {
 private:
 	int current_colour;
@@ -19,7 +31,7 @@ private:
 	Display display;
 	Tool *active_tool;
 	vector<GUIelement*> *palette;
-	Warning *warning;
+	//Warning *warning;
 	GUI_label<Pixel> *coords_label;
 	bool quit;
 public:
@@ -43,6 +55,8 @@ public:
 	void set_up_events();
 	void handle_events();
 	void loop();
+	void load();
+	void save();
 	static Pixel get_mouse_position();
 	static Pixel get_canvas_mouse_position();
 	void draw_everything();

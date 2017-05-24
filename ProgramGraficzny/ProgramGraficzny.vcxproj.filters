@@ -110,8 +110,5 @@
     <ClCompile Include="Button_colour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="warning.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

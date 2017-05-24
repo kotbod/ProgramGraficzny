@@ -197,7 +197,6 @@
     <ClCompile Include="pencil.cpp" />
     <ClCompile Include="pixel.cpp" />
     <ClCompile Include="Button_width.cpp" />
-    <ClCompile Include="warning.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -65,9 +65,9 @@ void Canvas::backup_surface() {
 	}
 	SDL_Rect r = { 0, 0, surface->w, surface->h };
 	SDL_Surface* last = saved_states[0];
-	for (int i = 1; i < saved_states.size(); i++) {		
+	for (int i = 1; i < saved_states.size(); i++) 
+	{		
 		saved_states[i - 1] = saved_states[i];
-		
 	}	
 	SDL_BlitSurface(surface, &r, last, &r);
 	saved_states[saved_states.size() - 1] = last;	
@@ -91,7 +91,7 @@ void Canvas::go_back() {
 
 int Canvas::get_pixel(Pixel pos) {
 	if (!is_on_canvas(pos)) {
-		throw NotOnCanvas();
+
 	}
 	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
 	if (pixel_format_reversed) {
@@ -106,7 +106,7 @@ int Canvas::get_pixel(Pixel pos) {
 void Canvas::set_pixel(Pixel pos, int colour)
 {
 	if (!is_on_canvas(pos)) {
-		throw NotOnCanvas();
+		//throw NotOnCanvas();
 	}
 	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
 	if (pixel_format_reversed) {
