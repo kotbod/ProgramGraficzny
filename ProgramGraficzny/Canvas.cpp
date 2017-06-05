@@ -188,11 +188,15 @@ void Canvas::clear()
 }
 void Canvas::load_canvas(char* outPath)
 {
+	SDL_Surface* new_surf = IMG_Load(outPath);
+	if (new_surf == nullptr) {
+		throw WrongExtension();
+	}
 	SDL_FreeSurface(surface);
 	for (SDL_Surface* backup_surface : saved_states) {
 		SDL_FreeSurface(backup_surface);
 	}
-	surface = IMG_Load(outPath);	
+	
 	init_save_states();
 	cout << surface->w << endl;
 }

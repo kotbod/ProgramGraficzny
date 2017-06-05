@@ -13,13 +13,13 @@ using namespace std;
 class NoOpenPath : public exception {
 public:
 	virtual const char* what() noexcept {
-		return "Nie podano scieki pliku!";
+		return "Nie podano sciezki pliku!\n";
 	}
 };
 class NoSavePath : public exception {
 public:
 	virtual const char* what() noexcept {
-		return "Nie podano scieki pliku!";
+		return "Nie podano sciezki pliku!\n";
 	}
 };
 class Application {

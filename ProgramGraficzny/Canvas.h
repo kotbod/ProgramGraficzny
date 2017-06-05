@@ -14,6 +14,13 @@ const int MEMORY_FOR_SAVED_STATES = 300000000;
 	}
 };*/
 
+class WrongExtension : public exception {
+public:
+	virtual const char* what() noexcept {
+		return "Nieprawidlowe rozszerzenie!\n";
+	}
+};
+
 class Canvas {
 
 private:

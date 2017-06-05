@@ -128,8 +128,13 @@ void Application::load() {
 	nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
 	if (outPath != NULL) {
 		cout << outPath << endl;
-		main_canvas->load_canvas(outPath);
-		coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
+		try {
+			main_canvas->load_canvas(outPath);
+			coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
+		}	
+		catch (WrongExtension &e) {
+			cout << e.what();
+		}
 		free(outPath);
 	}
 	else {
