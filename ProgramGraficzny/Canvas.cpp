@@ -197,6 +197,7 @@ void Canvas::load_canvas(char* outPath)
 		SDL_FreeSurface(backup_surface);
 	}
 	
+	surface = new_surf;
 	init_save_states();
 	cout << surface->w << endl;
 }
