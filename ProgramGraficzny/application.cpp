@@ -39,8 +39,8 @@ int Application::NEW_FILE;
 int Application::SAVE;
 int Application::OPEN;
 int Application::GO_BACK;
-int Application::YES;
-int Application::NO;
+int Application::APPLY_LINEAR_BLUR;
+int Application::APPLY_GAUSSIAN_BLUR;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
@@ -53,8 +53,8 @@ void Application::set_up_events() {
 	SAVE = SDL_RegisterEvents(1);
 	OPEN = SDL_RegisterEvents(1);
 	GO_BACK = SDL_RegisterEvents(1);
-	YES = SDL_RegisterEvents(1);
-	NO = SDL_RegisterEvents(1);
+	APPLY_LINEAR_BLUR = SDL_RegisterEvents(1);
+	APPLY_GAUSSIAN_BLUR = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -85,14 +85,14 @@ void Application::start() {
 	palette->push_back(new Button_colour(0xFF00FF, Pixel(start.x + size.x * 7, start.y), Pixel(start.x + size.x * 7, start.y) + size, CHANGE_COLOUR));
 
 	start = Pixel(10, 40);
-	palette->push_back(new Button_tool(display.load_texture("pic/pencil.png"), start, start + size, CHANGE_TO_PENCIL));
-	palette->push_back(new Button_tool(display.load_texture("pic/marker.png"), Pixel(start.x + size.x * 1, start.y), Pixel(start.x + size.x * 1, start.y) + size, CHANGE_TO_MARKER));
-	palette->push_back(new Button_tool(display.load_texture("pic/eraser1.png"), Pixel(start.x + size.x * 2, start.y), Pixel(start.x + size.x * 2, start.y) + size, CHANGE_TO_ERASER));
-	palette->push_back(new Button_tool(display.load_texture("pic/paint.png"), Pixel(start.x + size.x * 3, start.y), Pixel(start.x + size.x * 3, start.y) + size, CHANGE_TO_PAINT));
-	palette->push_back(new Button_tool(display.load_texture("pic/new_file.png"), Pixel(start.x + size.x * 4, start.y), Pixel(start.x + size.x * 4, start.y) + size, NEW_FILE));
-	palette->push_back(new Button_tool(display.load_texture("pic/DISK.png"), Pixel(start.x + size.x * 5, start.y), Pixel(start.x + size.x * 5, start.y) + size, SAVE));
-	palette->push_back(new Button_tool(display.load_texture("pic/OPEN.png"), Pixel(start.x + size.x * 6, start.y), Pixel(start.x + size.x * 6, start.y) + size, OPEN));
-	palette->push_back(new Button_tool(display.load_texture("pic/back_arrow.png"), Pixel(start.x + size.x * 7, start.y), Pixel(start.x + size.x * 7, start.y) + size, GO_BACK));
+	palette->push_back(new Button_tool(display.load_texture("pic/pencil.png"), start, size, CHANGE_TO_PENCIL));
+	palette->push_back(new Button_tool(display.load_texture("pic/marker.png"), Pixel(start.x + size.x * 1, start.y), size, CHANGE_TO_MARKER));
+	palette->push_back(new Button_tool(display.load_texture("pic/eraser1.png"), Pixel(start.x + size.x * 2, start.y), size, CHANGE_TO_ERASER));
+	palette->push_back(new Button_tool(display.load_texture("pic/paint.png"), Pixel(start.x + size.x * 3, start.y), size, CHANGE_TO_PAINT));
+	palette->push_back(new Button_tool(display.load_texture("pic/new_file.png"), Pixel(start.x + size.x * 4, start.y), size, NEW_FILE));
+	palette->push_back(new Button_tool(display.load_texture("pic/DISK.png"), Pixel(start.x + size.x * 5, start.y), size, SAVE));
+	palette->push_back(new Button_tool(display.load_texture("pic/OPEN.png"), Pixel(start.x + size.x * 6, start.y), size, OPEN));
+	palette->push_back(new Button_tool(display.load_texture("pic/back_arrow.png"), Pixel(start.x + size.x * 7, start.y), size, GO_BACK));
 	start = Pixel(270, 5);
 	size = Pixel(38, 15);
 
@@ -231,13 +231,6 @@ void Application::loop() {
 	while (!quit) {
 		active_tool->update();
 		handle_events();
-		/*if (quit) {
-			warning = new Warning("Czy na pewno chcesz wyjsc?");
-			if (!warning->show()) {
-				quit = false;
-			}
-			delete warning;
-		}*/
 		for (GUIelement* c : *palette) {
 			c->update();
 		}

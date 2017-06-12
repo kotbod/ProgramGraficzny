@@ -31,7 +31,6 @@ private:
 	Display display;
 	Tool *active_tool;
 	vector<GUIelement*> *palette;
-	//Warning *warning;
 	GUI_label<Pixel> *coords_label;
 	bool quit;
 public:
@@ -48,8 +47,8 @@ public:
 	static int SAVE;
 	static int OPEN;
 	static int GO_BACK;
-	static int YES;
-	static int NO;
+	static int APPLY_LINEAR_BLUR;
+	static int APPLY_GAUSSIAN_BLUR;
 
 	void start();
 	void set_up_events();
