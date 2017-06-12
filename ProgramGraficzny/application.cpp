@@ -93,7 +93,9 @@ void Application::start() {
 	palette->push_back(new Button_tool(display.load_texture("pic/DISK.png"), Pixel(start.x + size.x * 5, start.y), size, SAVE));
 	palette->push_back(new Button_tool(display.load_texture("pic/OPEN.png"), Pixel(start.x + size.x * 6, start.y), size, OPEN));
 	palette->push_back(new Button_tool(display.load_texture("pic/back_arrow.png"), Pixel(start.x + size.x * 7, start.y), size, GO_BACK));
-	start = Pixel(270, 5);
+	palette->push_back(new Button_tool(display.load_texture("pic/placeholder.png"), Pixel(start.x + size.x * 8, start.y), size, APPLY_LINEAR_BLUR));
+	palette->push_back(new Button_tool(display.load_texture("pic/placeholder.png"), Pixel(start.x + size.x * 9, start.y), size, APPLY_GAUSSIAN_BLUR));
+	start = Pixel(320, 5);
 	size = Pixel(38, 15);
 
 	palette->push_back(new Button_width(1,display.load_texture("pic/line1.bmp"), start, start + size, CHANGE_WIDTH));
@@ -101,7 +103,7 @@ void Application::start() {
 	palette->push_back(new Button_width(5,display.load_texture("pic/line3.bmp"), Pixel(start.x, start.y + size.y * 2), Pixel(start.x, start.y + size.y * 2) + size, CHANGE_WIDTH));
 	palette->push_back(new Button_width(7,display.load_texture("pic/line4.bmp"), Pixel(start.x, start.y + size.y * 3), Pixel(start.x, start.y + size.y * 3) + size, CHANGE_WIDTH));
 
-	start = Pixel(320, 10);
+	start = Pixel(370, 10);
 	size = Pixel(40, 40);
 	palette->push_back(new ColourDisplay(0, start, size));
 
@@ -216,9 +218,24 @@ void Application::handle_events() {
 			}
 
 		}
-		 if (e.type == CHANGE_COLOUR) {
+		else if (e.type == CHANGE_COLOUR) {
 			current_colour = *(int*)e.user.data1;
 		}
+		else if (e.type == APPLY_GAUSSIAN_BLUR) {
+			main_canvas->backup_surface();
+			int kernel_size = 3;
+			float *kernel = new float[kernel_size*kernel_size]{ 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+			Filter f(kernel_size, kernel, true);
+			main_canvas->apply_filter(f);
+		}
+		else if (e.type == APPLY_LINEAR_BLUR) {
+			main_canvas->backup_surface();
+			int kernel_size = 3;
+			float *kernel = new float[kernel_size*kernel_size]{ 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			Filter f(kernel_size, kernel, true);
+			main_canvas->apply_filter(f);
+		}
+
 
 		for (GUIelement* c : *palette) {
 			 c->handle_event(e);

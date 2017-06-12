@@ -16,7 +16,7 @@ Canvas::Canvas(int width_of_canvas, int height_of_canvas)
 
 	SDL_Rect pixel_rect = { 0, 0, 1, 1 };
 	SDL_FillRect(surface, &pixel_rect, 0x00ff0000);
-	if (get_pixel(Pixel(0, 0)) != 0x00ff0000) {
+	if (get_pixel(surface, Pixel(0, 0)) != 0x00ff0000) {
 		SDL_FreeSurface(surface);
 		surface = SDL_CreateRGBSurface(0, width_of_canvas, height_of_canvas, 24, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);		
 		pixel_format_reversed = true;
@@ -89,11 +89,9 @@ void Canvas::go_back() {
 	saved_states[0] = first;
 }
 
-int Canvas::get_pixel(Pixel pos) {
-	if (!is_on_canvas(pos)) {
-
-	}
-	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
+// Get a pixel value from one of the surfaces associated with the canvas
+int Canvas::get_pixel(SDL_Surface* surf, Pixel pos) {
+	Uint8 *p = (Uint8 *)surf->pixels + pos.y * surf->pitch + pos.x * 3;
 	if (pixel_format_reversed) {
 		return p[0] << 16 | p[1] << 8 | p[2];
 	}
@@ -103,12 +101,13 @@ int Canvas::get_pixel(Pixel pos) {
 	}	
 }
 
-void Canvas::set_pixel(Pixel pos, int colour)
+// Set a pixel value on one of the surfaces associated with the canvas
+void Canvas::set_pixel(SDL_Surface* surf, Pixel pos, int colour)
 {
 	if (!is_on_canvas(pos)) {
 		//throw NotOnCanvas();
 	}
-	Uint8 *p = (Uint8 *)surface->pixels + pos.y * surface->pitch + pos.x * 3;
+	Uint8 *p = (Uint8 *)surf->pixels + pos.y * surf->pitch + pos.x * 3;
 	if (pixel_format_reversed) {
 		p[0] = colour >> 16;
 		p[1] = colour >> 8;
@@ -123,11 +122,11 @@ void Canvas::set_pixel(Pixel pos, int colour)
 
 void Canvas::fill_at(Pixel pos, int colour)
 {
-	if (!is_on_canvas(pos) || get_pixel(pos) == colour) {
+	if (!is_on_canvas(pos) || get_pixel(surface, pos) == colour) {
 		return;
 	}
 	SDL_LockSurface(surface);
-	int original_colour = get_pixel(pos);
+	int original_colour = get_pixel(surface, pos);
 	
 	vector<Pixel> stack;
 	stack.push_back(pos);
@@ -136,8 +135,8 @@ void Canvas::fill_at(Pixel pos, int colour)
 		stack.pop_back();
 		Pixel directions[4] = { Pixel(0, 1), Pixel(1, 0), Pixel(-1, 0), Pixel(0, -1) };
 		for (Pixel p : directions) {
-			if (is_on_canvas(next + p) && get_pixel(next + p) == original_colour) {
-				set_pixel(next + p, colour);
+			if (is_on_canvas(next + p) && get_pixel(surface, next + p) == original_colour) {
+				set_pixel(surface, next + p, colour);
 				stack.push_back(next + p);
 			}
 		}		
@@ -186,6 +185,7 @@ void Canvas::clear()
 	SDL_FillRect(surface, &rect, 0xFFFFFF);
 
 }
+
 void Canvas::load_canvas(char* outPath)
 {
 	SDL_Surface* new_surf = IMG_Load(outPath);
@@ -198,6 +198,47 @@ void Canvas::load_canvas(char* outPath)
 	}
 	
 	surface = new_surf;
-	init_save_states();
-	cout << surface->w << endl;
+	init_save_states();	
 }
+
+void Canvas::apply_filter(Filter &filter) {
+	SDL_Surface* new_surf = SDL_CreateRGBSurface(0, surface->w, surface->h, 24, rmask, gmask, bmask, 0);
+	int border_width = filter.size / 2;
+
+	for (int x = 0; x < surface->w; ++x) {
+		for (int y = 0; y < surface->h; ++y) {
+			Pixel p(x, y);
+			SDL_Rect kernel_rect = { x - filter.size / 2, y - filter.size / 2, filter.size, filter.size };
+			float rsum = 0;
+			float gsum = 0;
+			float bsum = 0;
+			float weight_sum = 0;
+			for (int i = 0; i < filter.size; ++i) {
+				for (int j = 0; j < filter.size; ++j) {
+					Pixel sample_point(kernel_rect.x + i, kernel_rect.y + j);
+					float weight;
+					if (is_on_canvas(sample_point)) {
+						weight = filter.kernel[j * filter.size + i];
+						weight_sum += weight;
+						Uint8 r, g, b;
+						SDL_GetRGB(get_pixel(surface, sample_point), surface->format, &r, &g, &b);
+						rsum += r * weight;
+						gsum += g * weight;
+						bsum += b * weight;
+					}
+				}
+			}
+			int rnorm = (int)(rsum / weight_sum);
+			int gnorm = (int)(gsum / weight_sum);
+			int bnorm = (int)(bsum / weight_sum);
+
+			int normalized_value = SDL_MapRGB(surface->format, rnorm, gnorm, bnorm);
+
+			set_pixel(new_surf, p, normalized_value);
+		}
+	}
+
+	SDL_FreeSurface(surface);
+	surface = new_surf;
+}
+

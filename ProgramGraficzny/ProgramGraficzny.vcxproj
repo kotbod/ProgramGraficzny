@@ -173,6 +173,7 @@
     <ClInclude Include="colour_display.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="Eraser.h" />
+    <ClInclude Include="filter.h" />
     <ClInclude Include="GUIelement.h" />
     <ClInclude Include="GUI_label.h" />
     <ClInclude Include="Marker.h" />
@@ -181,7 +182,7 @@
     <ClInclude Include="pixel.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tool.h" />
-    <ClInclude Include="warning.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
@@ -191,12 +192,14 @@
     <ClCompile Include="colour_display.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="Eraser.cpp" />
+    <ClCompile Include="filter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Marker.cpp" />
     <ClCompile Include="paint.cpp" />
     <ClCompile Include="pencil.cpp" />
     <ClCompile Include="pixel.cpp" />
     <ClCompile Include="Button_width.cpp" />
+    <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

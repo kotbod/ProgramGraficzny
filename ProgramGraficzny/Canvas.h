@@ -1,6 +1,7 @@
 #pragma once
-#include<SDL.h>
+#include <SDL.h>
 #include "pixel.h"
+#include "filter.h"
 #include <exception>
 #include <vector>
 using namespace std;
@@ -30,7 +31,7 @@ private:
 
 	bool pixel_format_reversed = false;	
 	vector<SDL_Surface *> saved_states;
-	int amount_saved = 0;
+	size_t amount_saved = 0;
 public:
 	SDL_Surface *surface;
 
@@ -41,13 +42,13 @@ public:
 	bool is_on_canvas(SDL_Rect rect);
 	void backup_surface();
 	void go_back();
-	int get_pixel(Pixel pos);
-	void set_pixel(Pixel pos, int colour);
+	int get_pixel(SDL_Surface* surface, Pixel pos);
+	void set_pixel(SDL_Surface* surface, Pixel pos, int colour);
 	void fill_at(Pixel pos, int colour);
 	void draw_line(Pixel P1, Pixel P2, int color, int width);
 	void clear();
 	void load_canvas(char* outPath);
-	
+	void apply_filter(Filter &filter);	
 };
 
 
