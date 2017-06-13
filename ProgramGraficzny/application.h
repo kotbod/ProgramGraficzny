@@ -51,6 +51,8 @@ public:
 	static int GO_BACK;
 	static int APPLY_LINEAR_BLUR;
 	static int APPLY_GAUSSIAN_BLUR;
+	static int TO_GREYSCALE;
+	static int SHOW_EDGES;
 
 	void start();
 	void set_up_events();

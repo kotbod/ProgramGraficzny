@@ -180,6 +180,7 @@
     <ClInclude Include="paint.h" />
     <ClInclude Include="pencil.h" />
     <ClInclude Include="pixel.h" />
+    <ClInclude Include="surface.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tool.h" />
     <ClInclude Include="utility.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="pencil.cpp" />
     <ClCompile Include="pixel.cpp" />
     <ClCompile Include="Button_width.cpp" />
+    <ClCompile Include="surface.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

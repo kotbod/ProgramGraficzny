@@ -22,5 +22,6 @@ public:
 	SDL_Window* get_window();
 
 	SDL_Surface* load_texture(std::string path);
+	SDL_Surface* render_text(std::string text);
 	void update();
 };

@@ -41,6 +41,8 @@ int Application::OPEN;
 int Application::GO_BACK;
 int Application::APPLY_LINEAR_BLUR;
 int Application::APPLY_GAUSSIAN_BLUR;
+int Application::TO_GREYSCALE;
+int Application::SHOW_EDGES;
 
 void Application::set_up_events() {
 	CHANGE_COLOUR = SDL_RegisterEvents(1);
@@ -55,6 +57,8 @@ void Application::set_up_events() {
 	GO_BACK = SDL_RegisterEvents(1);
 	APPLY_LINEAR_BLUR = SDL_RegisterEvents(1);
 	APPLY_GAUSSIAN_BLUR = SDL_RegisterEvents(1);
+	TO_GREYSCALE = SDL_RegisterEvents(1);
+	SHOW_EDGES = SDL_RegisterEvents(1);
 }
 
 Application::Application() : display(SCREEN_WIDTH, SCREEN_HEIGHT), quit(false) {
@@ -93,21 +97,27 @@ void Application::start() {
 	palette->push_back(new Button_tool(display.load_texture("pic/DISK.png"), Pixel(start.x + size.x * 5, start.y), size, SAVE));
 	palette->push_back(new Button_tool(display.load_texture("pic/OPEN.png"), Pixel(start.x + size.x * 6, start.y), size, OPEN));
 	palette->push_back(new Button_tool(display.load_texture("pic/back_arrow.png"), Pixel(start.x + size.x * 7, start.y), size, GO_BACK));
-	palette->push_back(new Button_tool(display.load_texture("pic/placeholder.png"), Pixel(start.x + size.x * 8, start.y), size, APPLY_LINEAR_BLUR));
-	palette->push_back(new Button_tool(display.load_texture("pic/placeholder.png"), Pixel(start.x + size.x * 9, start.y), size, APPLY_GAUSSIAN_BLUR));
-	start = Pixel(320, 5);
+	
+	start = Pixel(270, 5);
 	size = Pixel(38, 15);
-
-	palette->push_back(new Button_width(1,display.load_texture("pic/line1.bmp"), start, start + size, CHANGE_WIDTH));
-	palette->push_back(new Button_width(3,display.load_texture("pic/line2.bmp"), Pixel(start.x, start.y + size.y * 1), Pixel(start.x, start.y + size.y * 1) + size, CHANGE_WIDTH));
-	palette->push_back(new Button_width(5,display.load_texture("pic/line3.bmp"), Pixel(start.x, start.y + size.y * 2), Pixel(start.x, start.y + size.y * 2) + size, CHANGE_WIDTH));
-	palette->push_back(new Button_width(7,display.load_texture("pic/line4.bmp"), Pixel(start.x, start.y + size.y * 3), Pixel(start.x, start.y + size.y * 3) + size, CHANGE_WIDTH));
-
-	start = Pixel(370, 10);
+	
+	palette->push_back(new Button_width(1, display.load_texture("pic/line1.bmp"), start, start + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(3, display.load_texture("pic/line2.bmp"), Pixel(start.x, start.y + size.y * 1), Pixel(start.x, start.y + size.y * 1) + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(5, display.load_texture("pic/line3.bmp"), Pixel(start.x, start.y + size.y * 2), Pixel(start.x, start.y + size.y * 2) + size, CHANGE_WIDTH));
+	palette->push_back(new Button_width(7, display.load_texture("pic/line4.bmp"), Pixel(start.x, start.y + size.y * 3), Pixel(start.x, start.y + size.y * 3) + size, CHANGE_WIDTH));
+	
+	start = Pixel(320, 10);
 	size = Pixel(40, 40);
 	palette->push_back(new ColourDisplay(0, start, size));
 
-	coords_label = new GUI_label<Pixel>(&canvas_mouse_pos, Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10), 18);
+	start = Pixel(400, 5);
+	size = Pixel(200, 60);
+	palette->push_back(new Button_tool(display.load_texture("pic/linear.png"), Pixel(start.x, start.y), size, APPLY_LINEAR_BLUR));
+	palette->push_back(new Button_tool(display.load_texture("pic/gauss.png"), Pixel(start.x + size.x * 1, start.y), size, APPLY_GAUSSIAN_BLUR));
+	palette->push_back(new Button_tool(display.load_texture("pic/greyscale.png"), Pixel(start.x + size.x * 2, start.y), size, TO_GREYSCALE));
+	palette->push_back(new Button_tool(display.load_texture("pic/edge_det.png"), Pixel(start.x + size.x * 3, start.y), size, SHOW_EDGES));
+	
+	coords_label = new GUI_label<Pixel>(&canvas_mouse_pos, Pixel(0, main_canvas->surface->height + MENU_HEIGHT + 10), 18);
 	palette->push_back(coords_label);
 
 	loop();
@@ -116,8 +126,8 @@ void Application::start() {
 
 void Application::draw_everything() {
 	// wyswietl obszar plotna
-	SDL_Rect dstrect = { 0, MENU_HEIGHT, main_canvas->surface->w,main_canvas->surface->h };
-	SDL_BlitSurface(main_canvas->surface, NULL, display.window_surface, &dstrect);
+	SDL_Rect dstrect = { 0, MENU_HEIGHT, main_canvas->surface->width ,main_canvas->surface->height };
+	SDL_BlitSurface(main_canvas->surface->_surface, NULL, display.window_surface, &dstrect);
 	for (GUIelement* c : *palette) {
 		c->draw(&display);
 	}
@@ -132,7 +142,7 @@ void Application::load() {
 		cout << outPath << endl;
 		try {
 			main_canvas->load_canvas(outPath);
-			coords_label->change_position(Pixel(0, main_canvas->surface->h + MENU_HEIGHT + 10));
+			coords_label->change_position(Pixel(0, main_canvas->surface->height + MENU_HEIGHT + 10));
 		}	
 		catch (WrongExtension &e) {
 			cout << e.what();
@@ -149,7 +159,7 @@ void Application::save() {
 	nfdresult_t w = NFD_SaveDialog(NULL, NULL, &outPath);
 
 	if (outPath != NULL) {
-		int a = SDL_SaveBMP(main_canvas->surface, outPath);
+		main_canvas->surface->save(outPath);		
 		free(outPath);
 	}
 	else {
@@ -190,8 +200,8 @@ void Application::handle_events() {
 		}
 		else if (e.type == NEW_FILE)
 		{
-			main_canvas->clear();
-			
+			main_canvas->backup_surface();
+			main_canvas->clear();			
 		}
 		else if (e.type == GO_BACK || 
 			((keystates[SDL_SCANCODE_LCTRL] || keystates[SDL_SCANCODE_RCTRL]) && e.key.keysym.scancode == SDL_SCANCODE_Z && e.type == SDL_KEYDOWN) ) {
@@ -234,6 +244,14 @@ void Application::handle_events() {
 			float *kernel = new float[kernel_size*kernel_size]{ 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			Filter f(kernel_size, kernel, true);
 			main_canvas->apply_filter(f);
+		}
+		else if (e.type == TO_GREYSCALE) {
+			main_canvas->backup_surface();
+			main_canvas->to_greyscale();
+		}
+		else if (e.type == SHOW_EDGES) {
+			main_canvas->backup_surface();
+			main_canvas->show_edges();
 		}
 
 

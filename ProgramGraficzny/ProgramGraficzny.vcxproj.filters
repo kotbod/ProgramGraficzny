@@ -72,6 +72,9 @@
     <ClInclude Include="utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
